@@ -8,6 +8,13 @@
     "build": "tsc --build && node esbuild.build.mjs",
     "dev": "node esbuild.dev.mjs"
   },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Ragudos/vanilla-toast.git"
+  },
+  "bugs": {
+    "url": "https://github.com/Ragudos/vanilla-toast/issues"
+  },
   "author": "Aaron",
   "license": "MIT",
   "devDependencies": {
