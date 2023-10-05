@@ -1,16 +1,22 @@
 {
   "name": "@vanilla-toast/test",
+  "type": "module",
   "private": true,
   "version": "0.1.0",
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "browser:install": "pnpm exec playwright install --with-deps",
+    "start": "pnpm exec playwright test"
   },
   "keywords": [],
   "author": "",
   "license": "MIT",
   "devDpendencies": {
     "@vanilla-toast/vanilla-toast": "file:../vanilla-toast"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.38.1",
+    "@types/node": "^20.8.2"
   }
 }
