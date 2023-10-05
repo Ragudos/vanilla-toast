@@ -1,7 +1,6 @@
 <div>
     <img src="./packages/docs/public/icon.png" width="250" alt="vanilla-toast-logo-png">
     <br />
-    <h1>Vanilla Toast</h1>
     <div>
         <img alt="GitHub Workflow Status (with event)" src="https://img.shields.io/github/actions/workflow/status/Ragudos/vanilla-toast/playwright.yml">
         <img alt="GitHub" src="https://img.shields.io/github/license/Ragudos/vanilla-toast">
@@ -10,15 +9,18 @@
     </div>
 </div>
 
+# Vanilla Toast
+A toast library for vanilla lovers :heartpulse:.
+
 ## Why vanilla toast?
 Well, with all the amount of frameworks out there, it's become overwhelming. They are great tools, yes, but the abstraction is crazy and I did not get a change to learn about the lower level APIs like EventSource, Websocket, Clusters for concurrency, ArrayBuffers, etc. That's why I decided to make this toast library to make my life easier when I develop client-side apps with Vanilla JavaScript.
 
-### Features
+## Features
 
 - Dependency Free
 - Customizable
 
-#### LICENSE
+## LICENSE
 
 MIT License
 
