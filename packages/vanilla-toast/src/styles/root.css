@@ -1,0 +1,60 @@
+:root {
+    --toast-container-height: 95%;
+    --toast-container-width: 95%;
+
+    --toast-border-width: 1px;
+    --toast-border-style: solid;
+    --toast-border-color: transparent;
+
+    --toast-loading-color: #000;
+
+    --toast-width: clamp(5rem, 100%, 15rem);
+    --toast-height: 1.25rem;
+
+    --toast-spacing: 0.75rem;
+
+    --toast-padding: 0.5rem 1rem;
+
+    --toast-radius: 0.5rem;
+
+    --toast-background-color: #fff;
+    --toast-text-color: #000;
+
+    --toast-align-items: center;
+
+    --toast-title-font-weight: 700;
+
+    --toast-box-shadow: 0 4px 2px hsla(0, 0%, 2%, 0.5);
+
+    --toast-ease: ease-in;
+
+    --toast-success: #95DF89;
+    --toast-success-foreground: #000;
+
+    --toast-info: #74BFF5;
+    --toast-info-foreground: #000;
+
+    --toast-error: #ED7E81;
+    --toast-error-foreground: #000;
+
+    --toast-warn: #EDEF7A;
+    --toast-warn-foreground: #000;
+
+    --toast-transform-origin: center;
+}
+
+.dark,
+html[style='color-scheme: dark;'] {
+    --toast-border-color: #fff;
+
+    --toast-loading-color: #fff;
+
+    --toast-background-color: #000;
+    --toast-text-color: #fff;
+}
+
+.toast-loading {
+    border-radius: 100%;
+    border: 1px solid #000;
+    border-right-color: gray;
+}

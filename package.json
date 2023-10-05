@@ -1,0 +1,42 @@
+{
+  "name": "vanilla-toast",
+  "version": "0.1.0",
+  "description": "A dependency-free toast notification library for vanilla users of JavaScript!",
+  "type": "module",
+  "engines": {
+    "node": ">=18.18.0"
+  },
+  "scripts": {
+    "build": "npm run -w @vanilla-toast/vanilla-toast build",
+    "dev": "npm run -w @vanilla-toast/vanilla-toast dev",
+    "lint": "eslint ./",
+    "lint:fix": "eslint ./ --fix",
+    "type-check": "tsc --noEmit",
+    "format": "prettier -w \"**/*.{ts,tsx,js,jsx}\" && pnpm run type-check && pnpm run lint:fix",
+    "prepare": "husky install"
+  },
+  "workspaces": [
+    "./packages/vanilla-toast"
+  ],
+  "keywords": [
+    "vanilla-toast",
+    "toast-notification",
+    "toast notification in vanilla"
+  ],
+  "author": "Aaron",
+  "license": "MIT",
+  "devDependencies": {
+    "@vanilla-toast/vanilla-toast": "file:./packages/vanilla-toast",
+    "@vanilla-toast/eslint-config": "file:./packages/eslint-config",
+    "@vanilla-toast/prettier-config": "file:./packages/prettier-config",
+    "@typescript-eslint/eslint-plugin": "^6.7.3",
+    "@typescript-eslint/parser": "^6.7.3",
+    "eslint": "^8.50.0",
+    "eslint-config-prettier": "^9.0.0",
+    "eslint-plugin-prettier": "^5.0.0",
+    "eslint-plugin-promise": "^6.1.1",
+    "husky": "^8.0.0",
+    "prettier": "^3.0.3",
+    "typescript": "^5.2.2"
+  }
+}

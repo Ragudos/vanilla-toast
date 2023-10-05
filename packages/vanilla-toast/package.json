@@ -1,0 +1,17 @@
+{
+  "name": "@vanilla-toast/vanilla-toast",
+  "version": "0.1.0",
+  "type": "module",
+  "main": "build/index.js",
+  "types": "build/@types/index.d.ts",
+  "scripts": {
+    "build": "tsc --build && node esbuild.build.mjs",
+    "dev": "node esbuild.dev.mjs"
+  },
+  "author": "Aaron",
+  "license": "MIT",
+  "devDependencies": {
+    "esbuild": "^0.19.4",
+    "typescript": "^5.2.2"
+  }
+}

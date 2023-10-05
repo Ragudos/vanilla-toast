@@ -1,0 +1,40 @@
+.toast-card[data-type="success"][data-color-type="icon-stroke"] {
+    --toast-icon-stroke-color: var(--toast-success);
+    --toast-icon-fill-color: var(--toast-background-color);
+}
+
+.toast-card[data-type="info"][data-color-type="icon-stroke"] {
+    --toast-icon-stroke-color: var(--toast-info);
+    --toast-icon-fill-color: var(--toast-background-color);  
+}
+
+.toast-card[data-type="error"][data-color-type="icon-stroke"] {
+    --toast-icon-stroke-color: var(--toast-error);
+    --toast-icon-fill-color: var(--toast-background-color);  
+}
+
+.toast-card[data-type="warn"][data-color-type="icon-stroke"] {
+    --toast-icon-stroke-color: var(--toast-warn);
+    --toast-icon-fill-color: var(--toast-background-color);  
+}
+
+.toast-card[data-type="success"][data-color-type="icon"] {
+    --toast-icon-fill-color: var(--toast-success);
+    --toast-icon-stroke-color: var(--toast-text-color);
+}
+
+.toast-card[data-type="info"][data-color-type="icon"] {
+    --toast-icon-fill-color: var(--toast-info);
+    --toast-icon-stroke-color: var(--toast-text-color);  
+}
+
+.toast-card[data-type="error"][data-color-type="icon"] {
+    --toast-icon-fill-color: var(--toast-error);
+    --toast-icon-stroke-color: var(--toast-text-color);  
+}
+
+.toast-card[data-type="warn"][data-color-type="icon"] {
+    --toast-icon-fill-color: var(--toast-warn);
+    --toast-icon-stroke-color: var(--toast-text-color);  
+}
+
