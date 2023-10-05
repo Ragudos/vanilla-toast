@@ -198,7 +198,7 @@ export function show_toast(
 
     toast_card.id = toast_id;
     toast_card.classList.add(style["toast-card"]);
-    toast_card.setAttribute("role", "notification");
+    toast_card.setAttribute("role", "alert");
     toast_card.setAttribute("data-type", type);
     toast_card.setAttribute("aria-live", aria_live[importance]);
     toast_card.setAttribute("data-color-type", colors);
