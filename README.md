@@ -31,7 +31,7 @@ This library will be up to ARIA accessibility standards as much as possible. The
   - slide-down
   - slide-left
   - slide-right
-  -slide-up
+  - slide-up
 
 ## LICENSE
 MIT License
