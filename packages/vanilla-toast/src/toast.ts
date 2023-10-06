@@ -248,7 +248,7 @@ export function show_toast(
                 if (options.close_button.custom_icon) {
                     append_custom_icon_to_element(
                         toast_close_button,
-                        options.close_button?.custom_icon,
+                        options?.close_button?.custom_icon,
                     );
                 } else {
                     import("./lib").then((module) => {

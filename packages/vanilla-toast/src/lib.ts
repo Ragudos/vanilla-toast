@@ -263,8 +263,10 @@ export function append_custom_icon_to_element(
     element: HTMLElement,
     custom_icon: string | HTMLElement | SVGElement,
 ) {
+    console.log(custom_icon);
+
     if (typeof custom_icon == "string") {
-        element.innerHTML = custom_icon;
+        element.innerHTML += custom_icon;
     } else if (
         custom_icon instanceof HTMLElement ||
         custom_icon instanceof SVGElement

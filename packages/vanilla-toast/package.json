@@ -5,7 +5,7 @@
   "main": "build/index.js",
   "types": "build/@types/index.d.ts",
   "scripts": {
-    "build": "tsc --build && node esbuild.build.mjs",
+    "build": "node esbuild.build.mjs && tsc --build",
     "dev": "node esbuild.dev.mjs"
   },
   "repository": {
