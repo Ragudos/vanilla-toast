@@ -16,14 +16,15 @@
   "bugs": {
     "url": "https://github.com/Ragudos/vanilla-toast/issues"
   },
-  "keywords": [],
-  "author": "",
+  "keywords": [
+    "vanilla-toast",
+    "tests"
+  ],
+  "author": "Aaron",
   "license": "MIT",
-  "devDpendencies": {
-    "@vanilla-toast/vanilla-toast": "file:../vanilla-toast"
-  },
   "devDependencies": {
     "@playwright/test": "^1.38.1",
-    "@types/node": "^20.8.2"
+    "@types/node": "^20.8.2",
+    "@vanilla-toast/vanilla-toast": "file:../vanilla-toast"
   }
 }

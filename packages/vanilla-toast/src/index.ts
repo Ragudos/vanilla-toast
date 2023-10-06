@@ -1,12 +1,14 @@
 /**@type {import("@types/index.d.ts")} */
 
-import { $, does_user_prefer_reduced_motion, dom_reflow } from "./lib";
+import { $, does_user_prefer_reduced_motion_query, dom_reflow } from "./lib";
 import { show_toast } from "./toast";
 import {
     DEFAULT_ANIMATION_DURATION,
     close_button_aborters_hashmaps,
     timer_hashmaps,
 } from "./consts";
+
+export { initialize_toast } from "./toast";
 
 import "./styles/root.css";
 import "./styles/position.css";
@@ -36,7 +38,7 @@ export type ToastPositions =
  * - Error means an x icon and a red background
  * - Warn means a warning icon and a yellow background
  * - Info means a letter i icon and a blue background
- * - Loading means a non-closable toast and a loading icon with a plain background
+ * - Loading means a loading toast with a loading icon and a plain background
  */
 export type ToastTypes =
     | "neutral"
@@ -286,6 +288,28 @@ export type ToastOptions = {
      * sm
      */
     shadow_size?: BoxShadowSizes;
+
+    /**
+     * The amount of pixels a toast should be dragged away from
+     * its original position based on the desired location
+     * &#40;i.e. horizontal&#41; before it's closed.
+     *
+     * @default
+     *
+     * 30
+     */
+    drag_threshold_before_closure?: number;
+
+    /**
+     * The direction which a user can drag the toast.
+     * This will determine whether a toast should be closed based
+     * on the threshold you provide.
+     *
+     * @default
+     *
+     * "horizontal"
+     */
+    drag_direction?: "horizontal" | "vertical";
 };
 
 /**
@@ -446,6 +470,8 @@ toast.loading = function (props, options) {
 };
 
 toast.dismiss = function (toast_id) {
+    const does_user_prefer_reduced_motion =
+        does_user_prefer_reduced_motion_query.matches;
     const toast_container = $("#toast-holder") as HTMLElement;
     const toast = $(`#${CSS.escape(toast_id)}`) as HTMLElement;
 
@@ -463,14 +489,16 @@ toast.dismiss = function (toast_id) {
      */
     close_button_aborters_hashmaps.get(toast_id)?.abort();
     close_button_aborters_hashmaps.delete(toast_id);
+    clearTimeout(timer_hashmaps.get(toast_id));
+    timer_hashmaps.delete(toast_id);
 
-    if (does_user_prefer_reduced_motion) {
+    const is_hidden = toast.getAttribute("aria-hidden");
+
+    if (is_hidden == "true" || does_user_prefer_reduced_motion) {
         toast_container.removeChild(toast);
     } else {
-        clearTimeout(timer_hashmaps.get(toast_id));
-        timer_hashmaps.delete(toast_id);
         toast.style.setProperty("--toast-animation-direction", "reverse");
-        toast.style.setProperty("--toast-animation-fill-mode", "backwards");
+        toast.style.setProperty("--toast-animation-fill-mode", "forwards");
 
         dom_reflow(toast);
 

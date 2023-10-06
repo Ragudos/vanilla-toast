@@ -16,6 +16,7 @@
     position: absolute;
 
     width: var(--toast-width, clamp(5rem, 100%, 20rem));
+    height: fit-content;
 }
 
 .toast-card {

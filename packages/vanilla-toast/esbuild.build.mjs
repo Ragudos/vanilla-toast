@@ -8,4 +8,6 @@ await esbuild.build({
     logLevel: "debug",
     format: "esm",
     splitting: true,
+    keepNames: true,
+    minify: true
 });

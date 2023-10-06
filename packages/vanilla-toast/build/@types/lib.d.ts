@@ -28,7 +28,8 @@ export declare const $create: {
     (tagName: string, options?: ElementCreationOptions): HTMLElement;
 };
 export declare const toast_container: HTMLElement;
-export declare let does_user_prefer_reduced_motion: boolean;
+export declare const does_user_prefer_reduced_motion_query: MediaQueryList;
+export declare const does_user_prefer_reduced_motion: boolean;
 /**
  * ## gen_random_id()
  * Synchronously generates a random id using Math.random along a string of alphanumericals using a for loop.

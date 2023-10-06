@@ -15,6 +15,15 @@ export const DEFAULT_ANIMATION: ToastAnimations = "popdown";
 export const DEFAULT_CLOSE_BUTTON_POSITION: ToastCloseButtonPositions =
     "top-right";
 export const DEFAULT_BOX_SHADOW_SIZE: BoxShadowSizes = "sm";
+export const DEFAULT_MAX_TOASTS_VISIBLE = 3;
+export const TOAST_POSITIONS: ToastPositions[] = [
+    "top-left",
+    "top-center",
+    "top-right",
+    "bottom-left",
+    "bottom-right",
+    "bottom-center",
+];
 
 /**
  *  A mapping of box shadow sizes

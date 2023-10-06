@@ -97,8 +97,8 @@ export type ToastCloseButtonOptions = {
     type?: "text";
     /**
      * Please do pass in the property "type" a value of "text" if you
-     * are going to pass in a text
-     * since the fallback value for the type property is icon.
+     * are going to pass in a text since the conditional checks for the "type" value,
+     * and if it does not exist, then it will default to an X icon.
      *
      * @default
      * close
@@ -108,6 +108,10 @@ export type ToastCloseButtonOptions = {
     type?: "icon";
     /** If this custom icon is a string,
      *  then we append it using innerHTML.
+     *
+     * Please do pass in the property "type" a value of "icon" if you
+     * are going to pass in an icon since the conditional checks for the "type" value,
+     * and if it does not exist, then it will default to an X icon.
      *
      * @default
      *
@@ -229,6 +233,26 @@ export type ToastOptions = {
      * sm
      */
     shadow_size?: BoxShadowSizes;
+    /**
+     * The amount of pixels a toast should be dragged away from
+     * its original position based on the desired location
+     * &#40;i.e. horizontal&#41; before it's closed.
+     *
+     * @default
+     *
+     * 30
+     */
+    drag_threshold_before_closure?: number;
+    /**
+     * The direction which a user can drag the toast.
+     * This will determine whether a toast should be closed based
+     * on the threshold you provide.
+     *
+     * @default
+     *
+     * "horizontal"
+     */
+    drag_direction?: "horizontal" | "vertical";
 };
 /**
  * ## ToastProps

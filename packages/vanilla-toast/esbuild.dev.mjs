@@ -14,6 +14,8 @@ const ctx = await esBuild.context({
     logLevel: "info",
     format: "esm",
     splitting: true,
+    minify: true,
+    keepNames: true,
 });
 
 // serve app to port @ localhost

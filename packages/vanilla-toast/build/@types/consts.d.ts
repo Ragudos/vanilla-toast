@@ -7,6 +7,7 @@ export declare const DEFAULT_COLORS: ToastColor;
 export declare const DEFAULT_ANIMATION: ToastAnimations;
 export declare const DEFAULT_CLOSE_BUTTON_POSITION: ToastCloseButtonPositions;
 export declare const DEFAULT_BOX_SHADOW_SIZE: BoxShadowSizes;
+export declare const DEFAULT_MAX_TOASTS_VISIBLE = 3;
 /**
  *  A mapping of box shadow sizes
  */

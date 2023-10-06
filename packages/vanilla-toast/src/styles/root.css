@@ -32,7 +32,7 @@
     --toast-success: #77DD77;
     --toast-success-foreground: #000;
 
-    --toast-info: #AEC6CF;
+    --toast-info: #b7cbf5;
     --toast-info-foreground: #000;
 
     --toast-error: #ff6961;
@@ -84,8 +84,8 @@ html[style='color-scheme: dark;'] {
     border-right-color: gray;
 }
 
-@media screen and (min-width: 649px) {
+@media screen and (min-width: 480px) {
     :root {
-        --toast-width: clamp(5rem, 100%, 15rem);
+        --toast-width: clamp(5rem, 90%, 18rem);
     }
 }

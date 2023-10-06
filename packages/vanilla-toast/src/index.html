@@ -11,52 +11,40 @@
 <body>
     <script src="./index.js" type="module"></script>
     <script type="module">
-        import { toast } from "./index.js";
+        import { toast, initialize_toast } from "./index.js";
 
         window.addEventListener("DOMContentLoaded", () => {
-            toast({ message: "hello" });
-            toast.warn({ message: "Warning!" }, {
-                automatically_close: false,
-                close_button: {
-                    appearance: "visible-on-hover",
-                    custom_icon: "<div>je;;p</div>",
-                    type: "icon"
-                }
-            });
-            toast.loading({ message: "Loading!" });
-            toast.error({ message: "Error!" });
-            toast.success({ message: "Success!" });
-            toast.info({ message: "Info!" }, {
-                automatically_close: false
-            });
-            toast.success({ message: "Hohoh!" }, {
-                icon_position: "right",
-                colors: "icon-stroke",
-                automatically_close: false,
-                close_button: {
-                    position: "inline"
-                },
-            });
-            toast.error({ message: "Error" }, {
-                colors: "icon-stroke",
-                animation: "slide-right",
-            });
-            toast.error({ message: "Errorrrr" }, {
-                colors: "icon",
-                automatically_close: false,
-                close_button: {
-                    position: "top-right",
-                    type: "text",
-                    custom_button: {
-                        className: "hello world"
-                    }
-                },
-            });
-            toast.warn({ message: "Warning", title: "Hoho" }, {
-                colors: "icon",
-                animation: "slide-left",
-                close_button: true
-            });
+            initialize_toast();
+
+            toast({ message: "Hello World!" });
+            setTimeout(() => {
+                toast({ message: "Hello Wodadasrld!" });
+            }, 500);
+
+            setTimeout(() => {
+                toast({ message: "Hello Wordasdasdld!" });
+            }, 1000);
+
+            setTimeout(() => {
+                toast({ message: "Helfdsfsdflo Wordasdasdld!" });
+            }, 1500);
+            setInterval(() => {
+                toast({ message: "Hello World!" });
+                setTimeout(() => {
+                    toast({ message: "Hello Wodadasrld!" });
+                }, 500);
+
+                setTimeout(() => {
+                    toast({ message: "Hello Wordasdasdld!" });
+                }, 1000);
+
+                setTimeout(() => {
+                    toast({ message: "Helfdsfsdflo Wordasdasdld!" }, {
+                        toast_position: "bottom-center",
+                        max_toasts_visible: 5,
+                    });
+                }, 1500);
+            }, 5000);
         })
     </script>
 </body>

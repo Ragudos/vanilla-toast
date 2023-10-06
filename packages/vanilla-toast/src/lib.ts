@@ -40,16 +40,12 @@ export const $create = document.createElement.bind(
 ) as typeof document.createElement;
 
 export const toast_container = document.getElementById("toast-container");
-const does_user_prefer_reduced_motion_query = window.matchMedia(
-    "('prefers-reduced-motion')",
+export const does_user_prefer_reduced_motion_query = window.matchMedia(
+    "(prefers-reduced-motion)",
 );
 
-export let does_user_prefer_reduced_motion =
+export const does_user_prefer_reduced_motion =
     does_user_prefer_reduced_motion_query.matches;
-
-does_user_prefer_reduced_motion_query.addEventListener("change", (e) => {
-    does_user_prefer_reduced_motion = e.matches;
-});
 
 const MAX_ID_LENGTH = 16;
 const MIN_ID_LENGTH = 6;
