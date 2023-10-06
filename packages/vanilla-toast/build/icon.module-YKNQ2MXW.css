@@ -1,0 +1,34 @@
+/* src/styles/dynamic/icon.module.css */
+.icon_toast-card[data-type=success][data-color-type=icon-stroke] {
+  --toast-icon-stroke-color: var(--toast-success);
+  --toast-icon-fill-color: transparent;
+}
+.icon_toast-card[data-type=info][data-color-type=icon-stroke] {
+  --toast-icon-stroke-color: var(--toast-info);
+  --toast-icon-fill-color: transparent;
+}
+.icon_toast-card[data-type=error][data-color-type=icon-stroke] {
+  --toast-icon-stroke-color: var(--toast-error);
+  --toast-icon-fill-color: transparent;
+}
+.icon_toast-card[data-type=warn][data-color-type=icon-stroke] {
+  --toast-icon-stroke-color: var(--toast-warn);
+  --toast-icon-fill-color: transparent;
+}
+.icon_toast-card[data-type=success][data-color-type=icon] {
+  --toast-icon-fill-color: var(--toast-success);
+  --toast-icon-stroke-color: var(--toast-success-foreground);
+}
+.icon_toast-card[data-type=info][data-color-type=icon] {
+  --toast-icon-fill-color: var(--toast-info);
+  --toast-icon-stroke-color: var(--toast-info-foreground);
+}
+.icon_toast-card[data-type=error][data-color-type=icon] {
+  --toast-icon-fill-color: var(--toast-error);
+  --toast-icon-stroke-color: var(--toast-error-foreground);
+}
+.icon_toast-card[data-type=warn][data-color-type=icon] {
+  --toast-icon-fill-color: var(--toast-warn);
+  --toast-icon-stroke-color: var(--toast-warn-foreground);
+}
+/*# sourceMappingURL=icon.module-YKNQ2MXW.css.map */

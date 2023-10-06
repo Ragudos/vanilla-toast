@@ -7,7 +7,7 @@ const ctx = await esBuild.context({
         ".html": "copy",
     },
     bundle: true,
-    outdir: "www",
+    outdir: "dev",
     banner: {
         js: "(() => { (new EventSource(\"/esbuild\")).addEventListener('change', () => location.reload()); })();",
     },
@@ -19,7 +19,7 @@ const ctx = await esBuild.context({
 // serve app to port @ localhost
 await ctx
     .serve({
-        servedir: "www",
+        servedir: "dev",
         port: 3000,
     })
     .then((v) => {

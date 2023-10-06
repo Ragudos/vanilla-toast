@@ -8,10 +8,10 @@
 
     --toast-loading-color: #000;
 
-    --toast-width: clamp(5rem, 100%, 15rem);
-    --toast-height: 1.25rem;
+    --toast-width: 100%;
+    --toast-height: 1.5rem;
 
-    --toast-spacing: 0.75rem;
+    --toast-spacing: 0.5rem;
 
     --toast-padding: 0.5rem 1rem;
 
@@ -24,23 +24,34 @@
 
     --toast-title-font-weight: 700;
 
-    --toast-box-shadow: 0 4px 2px hsla(0, 0%, 2%, 0.5);
+    --toast-shadow-color: hsla(0, 0%, 2%, 0.25);
+    --toast-box-shadow: 0px 2px 4px var(--toast-shadow-color);
 
     --toast-ease: ease-in;
 
-    --toast-success: #95DF89;
+    --toast-success: #77DD77;
     --toast-success-foreground: #000;
 
-    --toast-info: #74BFF5;
+    --toast-info: #AEC6CF;
     --toast-info-foreground: #000;
 
-    --toast-error: #ED7E81;
+    --toast-error: #ff6961;
     --toast-error-foreground: #000;
 
-    --toast-warn: #EDEF7A;
+    --toast-warn: #FDFD96;
     --toast-warn-foreground: #000;
 
     --toast-transform-origin: center;
+
+    --toast-close-button-width: 1.25rem;
+    --toast-close-button-height: 1.25rem;
+
+    --toast-close-button-vertical-padding: 0.25rem;
+    --toast-close-button-horizontal-padding: 0.25rem;
+
+    --toast-close-button-border-radius: 100%;
+
+    --toast-icons-stroke-width: 2.5px;
 }
 
 .dark,
@@ -49,12 +60,32 @@ html[style='color-scheme: dark;'] {
 
     --toast-loading-color: #fff;
 
+    --toast-success: #062E03;
+    --toast-success-foreground: #fff;
+
+    --toast-info: #00035B;
+    --toast-info-foreground: #fff;
+
+    --toast-error: #840000;
+    --toast-error-foreground: #fff;
+
+    --toast-warn: #d5b60a;
+    --toast-warn-foreground: #000;
+
     --toast-background-color: #000;
     --toast-text-color: #fff;
+
+    --toast-close-button-border: 1px solid gray;
 }
 
 .toast-loading {
     border-radius: 100%;
-    border: 1px solid #000;
+    border: 1px solid var(--toast-text-color);
     border-right-color: gray;
+}
+
+@media screen and (min-width: 649px) {
+    :root {
+        --toast-width: clamp(5rem, 100%, 15rem);
+    }
 }

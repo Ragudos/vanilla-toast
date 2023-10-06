@@ -1,7 +1,5 @@
 import {
     toast,
-    ToastAnimations,
-    type ToastColor,
     type ToastImportance,
     type ToastOptions,
     type ToastProps,
@@ -9,21 +7,17 @@ import {
     type ToastTypes,
 } from ".";
 import {
-    DEFAULT_ANIMATION,
-    DEFAULT_ANIMATION_DURATION,
-    DEFAULT_COLORS,
-    DEFAULT_DURATION,
-    DEFAULT_ICON_POSITION,
-    DEFAULT_TOAST_POSITION,
+    close_button_aborters_hashmaps,
+    DEFAULT_BOX_SHADOW_SIZE,
+    DEFAULT_CLOSE_BUTTON_POSITION,
     timer_hashmaps,
 } from "./consts";
 import {
     $,
     $create,
+    append_custom_icon_to_element,
     does_user_prefer_reduced_motion,
-    gen_random_id,
-    get_icon,
-    get_importance,
+    init,
     toast_container,
 } from "./lib";
 
@@ -61,62 +55,6 @@ window.addEventListener("DOMContentLoaded", () => {
     }
 });
 
-function init(options?: Partial<ToastOptions>, type: ToastTypes = "neutral") {
-    let toast_container_provided_duration: number;
-
-    if (toast_container) {
-        toast_container_provided_duration =
-            +toast_container.getAttribute("data-duration")!;
-    } else {
-        toast_container_provided_duration = +$("#toast-container")!;
-    }
-
-    let enter_animation_duration: number;
-    let exit_animation_duration: number;
-    let duration: number;
-    let toast_id: string;
-    let importance: ToastImportance;
-    let color: ToastColor;
-    let animation: ToastAnimations;
-
-    if (options) {
-        duration =
-            options?.duration ||
-            toast_container_provided_duration ||
-            DEFAULT_DURATION;
-        toast_id = options?.toast_id || gen_random_id();
-        enter_animation_duration =
-            options?.animation_duration?.in || DEFAULT_ANIMATION_DURATION;
-        exit_animation_duration =
-            options?.animation_duration?.out || DEFAULT_ANIMATION_DURATION;
-        color = options?.colors || DEFAULT_COLORS;
-        importance = options?.importance || get_importance(type);
-        animation = options?.animation || DEFAULT_ANIMATION;
-    } else {
-        duration = toast_container_provided_duration || DEFAULT_DURATION;
-        toast_id = gen_random_id();
-        enter_animation_duration = DEFAULT_ANIMATION_DURATION;
-        exit_animation_duration = DEFAULT_ANIMATION_DURATION;
-        color = DEFAULT_COLORS;
-        importance = get_importance(type);
-        animation = DEFAULT_ANIMATION;
-    }
-
-    return {
-        animation_duration: {
-            in: enter_animation_duration,
-            out: exit_animation_duration,
-        },
-        duration,
-        toast_id,
-        icon_position: options?.icon_position || DEFAULT_ICON_POSITION,
-        toast_position: options?.toast_position || DEFAULT_TOAST_POSITION,
-        importance,
-        colors: color,
-        animation,
-    };
-}
-
 /**
  * ## Show toast
  * The main engine of this overall library. This handles toast creation.
@@ -140,6 +78,10 @@ export function show_toast(
         throw new Error("A loading toast should not be manually closed.");
     }
 
+    if (options && options.close_button == undefined) {
+        options.close_button = true;
+    }
+
     const {
         animation_duration,
         duration,
@@ -149,20 +91,20 @@ export function show_toast(
         importance,
         colors,
         animation,
+        automatically_close,
     } = init(options, type);
-
     const toast_container = $("#toast-holder")!;
 
     toast_container.classList.add("toast-" + toast_position);
 
     const { title, message } = props;
-
     const toast_card = $create("div");
     const toast_text_container = $create("div");
     const toast_message = $create("p");
 
     let toast_title: undefined | HTMLDivElement;
     let toast_icon_container: undefined | HTMLDivElement;
+    let toast_close_button: undefined | HTMLButtonElement;
 
     if (title) {
         toast_title = $create("div");
@@ -174,25 +116,26 @@ export function show_toast(
         toast_title.textContent = title;
     }
 
-    if (options?.custom_icon || type != "neutral") {
+    if (Boolean(options?.custom_icon) || type != "neutral") {
         toast_icon_container = $create("div");
         toast_icon_container.classList.add(style["toast-icon-container"]);
 
         if (options?.custom_icon) {
-            if (typeof options.custom_icon == "string") {
-                toast_icon_container.innerHTML = options.custom_icon;
-            } else if (
-                options?.custom_icon instanceof HTMLElement ||
-                options?.custom_icon instanceof SVGElement
-            ) {
+            append_custom_icon_to_element(
+                toast_icon_container,
+                options?.custom_icon,
+            );
+
+            if (typeof options?.custom_icon != "string") {
                 options?.custom_icon.classList.add(style["toast-icon"]);
-                toast_icon_container.append(options.custom_icon);
             }
         } else {
-            const svg = get_icon(type);
+            import("./lib").then((module) => {
+                const svg = module.get_icon(type);
 
-            svg.classList.add(style["toast-icon"]);
-            toast_icon_container.append(svg);
+                svg.classList.add(style["toast-icon"]);
+                toast_icon_container?.append(svg);
+            });
         }
     }
 
@@ -202,6 +145,17 @@ export function show_toast(
     toast_card.setAttribute("data-type", type);
     toast_card.setAttribute("aria-live", aria_live[importance]);
     toast_card.setAttribute("data-color-type", colors);
+
+    if (options?.shadow_size) {
+        import("./consts").then((module) => {
+            toast_card.style.setProperty(
+                "--toast-box-shadow",
+                module.BOX_SHADOW_SIZES[
+                    options?.shadow_size || DEFAULT_BOX_SHADOW_SIZE
+                ],
+            );
+        });
+    }
 
     if (!does_user_prefer_reduced_motion) {
         toast_card.setAttribute(
@@ -242,8 +196,143 @@ export function show_toast(
 
     toast_text_container.append(toast_message);
 
+    if (options?.close_button && type != "loading") {
+        let handle_close_button_click: undefined | ((_e: MouseEvent) => void);
+
+        toast_close_button = $create("button");
+
+        if (typeof options.close_button != "boolean") {
+            if (options.close_button?.appearance == "visible-on-hover") {
+                toast_card.classList.add(
+                    style["toast-card-close-button-hover"],
+                );
+            }
+
+            if (options.close_button.custom_button?.on_click) {
+                handle_close_button_click = function () {
+                    if (typeof options?.close_button != "boolean") {
+                        if (options?.close_button?.custom_button?.on_click) {
+                            options?.close_button?.custom_button?.on_click(
+                                toast_id,
+                            );
+                        }
+                    }
+
+                    toast.dismiss(toast_id);
+                };
+            } else {
+                handle_close_button_click = function () {
+                    toast.dismiss(toast_id);
+                };
+            }
+
+            toast_close_button.classList.add(
+                style[
+                    "toast-close-button-" +
+                        (options?.close_button?.position ||
+                            DEFAULT_CLOSE_BUTTON_POSITION)
+                ],
+            );
+
+            if (options.close_button.type == "text") {
+                toast_close_button.classList.add(
+                    style["toast-close-button-text"],
+                );
+                toast_close_button.style.setProperty(
+                    "--toast-close-button-border-radius",
+                    "0.25rem",
+                );
+                toast_close_button.textContent =
+                    options.close_button.text || "close";
+            } else if (options.close_button?.type == "icon") {
+                if (options.close_button.custom_icon) {
+                    append_custom_icon_to_element(
+                        toast_close_button,
+                        options.close_button?.custom_icon,
+                    );
+                } else {
+                    import("./lib").then((module) => {
+                        const svg = module.get_icon("close");
+
+                        svg.classList.add(style["toast-icon"]);
+                        toast_close_button?.append(svg);
+                    });
+                }
+            } else {
+                import("./lib").then((module) => {
+                    const svg = module.get_icon("close");
+
+                    svg.classList.add(style["toast-icon"]);
+                    toast_close_button?.append(svg);
+                });
+            }
+
+            if (options.close_button.custom_button?.className) {
+                toast_close_button.className +=
+                    " " + options.close_button.custom_button.className;
+            }
+        } else {
+            handle_close_button_click = function () {
+                toast.dismiss(toast_id);
+            };
+
+            import("./lib").then((module) => {
+                const svg = module.get_icon("close");
+
+                svg.classList.add(style["toast-icon"]);
+                toast_close_button?.append(svg);
+            });
+
+            toast_close_button.classList.add(
+                style["toast-close-button-" + DEFAULT_CLOSE_BUTTON_POSITION],
+            );
+        }
+
+        toast_close_button.setAttribute(
+            "aria-label",
+            "Close toast #" + toast_id,
+        );
+        toast_close_button.classList.add(style["toast-close-button"]);
+        toast_close_button.setAttribute("type", "button");
+        toast_close_button.setAttribute("aria-controls", toast_id);
+        toast_close_button.tabIndex = -1;
+
+        const aborter = new AbortController();
+
+        close_button_aborters_hashmaps.set(toast_id, aborter);
+
+        if (handle_close_button_click) {
+            toast_close_button.addEventListener(
+                "click",
+                handle_close_button_click,
+                {
+                    signal: aborter.signal,
+                    once: true,
+                },
+            );
+        } else {
+            console.error(
+                "Function to invoke for a close button does not exist!",
+            );
+        }
+    }
+
+    if (!toast_close_button && options?.close_button) {
+        throw new Error(
+            `Failed on creating a close button when it's specified for the toast instance with an id of ${toast_id} to have one!`,
+        );
+    }
+
     if (type != "neutral" && icon_position == "left") {
         toast_card.append(toast_icon_container as Node);
+    } else {
+        if (
+            (typeof options?.close_button != "boolean" &&
+                options?.close_button?.position == "inline") ||
+            options?.close_button
+        ) {
+            toast_card.append(toast_close_button as HTMLButtonElement);
+        }
     }
 
     toast_card.append(toast_text_container);
@@ -251,21 +340,30 @@ export function show_toast(
     if (type != "neutral" && icon_position == "right") {
         toast_card.append(toast_icon_container as Node);
         toast_text_container.style.textAlign = "right";
+    } else {
+        if (
+            (typeof options?.close_button != "boolean" &&
+                options?.close_button?.position == "inline") ||
+            options?.close_button
+        ) {
+            toast_card.append(toast_close_button as HTMLButtonElement);
+        }
     }
 
     toast_container.append(toast_card);
 
-    const timeout = setTimeout(
-        () => {
-            console.log(toast_id);
-            toast.dismiss(toast_id as string);
-        },
-        does_user_prefer_reduced_motion
-            ? duration
-            : duration - animation_duration?.out,
-    );
+    if (type != "loading" && automatically_close == true) {
+        const timeout = setTimeout(
+            () => {
+                toast.dismiss(toast_id as string);
+            },
+            does_user_prefer_reduced_motion
+                ? duration
+                : duration - animation_duration?.out,
+        );
 
-    timer_hashmaps.set(toast_id, timeout);
+        timer_hashmaps.set(toast_id, timeout);
+    }
 
     return { toast_id } as { toast_id: string };
 }

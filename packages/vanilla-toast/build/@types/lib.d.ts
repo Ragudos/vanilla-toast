@@ -1,4 +1,4 @@
-import type { ToastImportance, ToastTypes } from ".";
+import type { ToastImportance, ToastTypes, ToastAnimations, ToastColor, ToastOptions } from ".";
 /**
  * ## Query Selector
  * A shorthand for:
@@ -28,6 +28,7 @@ export declare const $create: {
     (tagName: string, options?: ElementCreationOptions): HTMLElement;
 };
 export declare const toast_container: HTMLElement;
+export declare let does_user_prefer_reduced_motion: boolean;
 /**
  * ## gen_random_id()
  * Synchronously generates a random id using Math.random along a string of alphanumericals using a for loop.
@@ -46,7 +47,7 @@ export declare function gen_random_id(length?: number): string;
  *  @see https://heroicons.com/
  *
  */
-export declare function get_icon(type: ToastTypes): HTMLElement | SVGSVGElement;
+export declare function get_icon(type: ToastTypes | "close"): HTMLElement | SVGSVGElement;
 /**
  * ## get_importance
  *
@@ -58,4 +59,23 @@ export declare function get_icon(type: ToastTypes): HTMLElement | SVGSVGElement;
  * - "critical" == "assertive"
  */
 export declare function get_importance(type: ToastTypes): ToastImportance;
-export declare let does_user_prefer_reduced_motion: boolean;
+export declare function init(options?: Partial<ToastOptions>, type?: ToastTypes): {
+    animation_duration: {
+        in: number;
+        out: number;
+    };
+    duration: number;
+    toast_id: string;
+    icon_position: "left" | "right";
+    toast_position: import(".").ToastPositions;
+    importance: ToastImportance;
+    colors: ToastColor;
+    animation: ToastAnimations;
+    automatically_close: boolean;
+};
+/**
+ * ## dom_reflow()
+ * Reflow the given element to reset its animation state.
+ */
+export declare function dom_reflow(element: HTMLElement): void;
+export declare function append_custom_icon_to_element(element: HTMLElement, custom_icon: string | HTMLElement | SVGElement): void;

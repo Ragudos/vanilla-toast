@@ -1,4 +1,19 @@
-import type { ToastImportance, ToastTypes } from ".";
+import type {
+    ToastImportance,
+    ToastTypes,
+    ToastAnimations,
+    ToastColor,
+    ToastOptions,
+} from ".";
+
+import {
+    DEFAULT_ANIMATION,
+    DEFAULT_ANIMATION_DURATION,
+    DEFAULT_COLORS,
+    DEFAULT_DURATION,
+    DEFAULT_ICON_POSITION,
+    DEFAULT_TOAST_POSITION,
+} from "./consts";
 
 /**
  * ## Query Selector
@@ -25,6 +40,16 @@ export const $create = document.createElement.bind(
 ) as typeof document.createElement;
 
 export const toast_container = document.getElementById("toast-container");
+const does_user_prefer_reduced_motion_query = window.matchMedia(
+    "('prefers-reduced-motion')",
+);
+
+export let does_user_prefer_reduced_motion =
+    does_user_prefer_reduced_motion_query.matches;
+
+does_user_prefer_reduced_motion_query.addEventListener("change", (e) => {
+    does_user_prefer_reduced_motion = e.matches;
+});
 
 const MAX_ID_LENGTH = 16;
 const MIN_ID_LENGTH = 6;
@@ -76,7 +101,9 @@ export function gen_random_id(length: number = 8) {
  *  @see https://heroicons.com/
  *
  */
-export function get_icon(type: ToastTypes): HTMLElement | SVGSVGElement {
+export function get_icon(
+    type: ToastTypes | "close",
+): HTMLElement | SVGSVGElement {
     if (type == "loading") {
         const loader = document.createElement("div");
 
@@ -126,6 +153,8 @@ export function get_icon(type: ToastTypes): HTMLElement | SVGSVGElement {
                 "d",
                 "M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126zM12 15.75h.007v.008H12v-.008z",
             );
+        } else if (type == "close") {
+            path.setAttribute("d", "M6 18L18 6M6 6l12 12");
         }
 
         svg.append(path);
@@ -158,13 +187,88 @@ export function get_importance(type: ToastTypes): ToastImportance {
     return importance;
 }
 
-const does_user_prefer_reduced_motion_query = window.matchMedia(
-    "('prefers-reduced-motion')",
-);
+export function init(
+    options?: Partial<ToastOptions>,
+    type: ToastTypes = "neutral",
+) {
+    let toast_container_provided_duration: number;
 
-export let does_user_prefer_reduced_motion =
-    does_user_prefer_reduced_motion_query.matches;
+    if (toast_container) {
+        toast_container_provided_duration =
+            +toast_container.getAttribute("data-duration")!;
+    } else {
+        toast_container_provided_duration = +$("#toast-container")!;
+    }
 
-does_user_prefer_reduced_motion_query.addEventListener("change", (e) => {
-    does_user_prefer_reduced_motion = e.matches;
-});
+    let enter_animation_duration: number;
+    let exit_animation_duration: number;
+    let duration: number;
+    let toast_id: string;
+    let importance: ToastImportance;
+    let color: ToastColor;
+    let animation: ToastAnimations;
+
+    if (options) {
+        duration =
+            options?.duration ||
+            toast_container_provided_duration ||
+            DEFAULT_DURATION;
+        toast_id = options?.toast_id || gen_random_id();
+        enter_animation_duration =
+            options?.animation_duration?.in || DEFAULT_ANIMATION_DURATION;
+        exit_animation_duration =
+            options?.animation_duration?.out || DEFAULT_ANIMATION_DURATION;
+        color = options?.colors || DEFAULT_COLORS;
+        importance = options?.importance || get_importance(type);
+        animation = options?.animation || DEFAULT_ANIMATION;
+    } else {
+        duration = toast_container_provided_duration || DEFAULT_DURATION;
+        toast_id = gen_random_id();
+        enter_animation_duration = DEFAULT_ANIMATION_DURATION;
+        exit_animation_duration = DEFAULT_ANIMATION_DURATION;
+        color = DEFAULT_COLORS;
+        importance = get_importance(type);
+        animation = DEFAULT_ANIMATION;
+    }
+
+    return {
+        animation_duration: {
+            in: enter_animation_duration,
+            out: exit_animation_duration,
+        },
+        duration,
+        toast_id,
+        icon_position: options?.icon_position || DEFAULT_ICON_POSITION,
+        toast_position: options?.toast_position || DEFAULT_TOAST_POSITION,
+        importance,
+        colors: color,
+        animation,
+        automatically_close: options?.automatically_close ?? true,
+    };
+}
+
+/**
+ * ## dom_reflow()
+ * Reflow the given element to reset its animation state.
+ */
+export function dom_reflow(element: HTMLElement) {
+    const className = element.className;
+
+    element.className = "";
+    element.offsetWidth;
+    element.className = className;
+}
+
+export function append_custom_icon_to_element(
+    element: HTMLElement,
+    custom_icon: string | HTMLElement | SVGElement,
+) {
+    if (typeof custom_icon == "string") {
+        element.innerHTML = custom_icon;
+    } else if (
+        custom_icon instanceof HTMLElement ||
+        custom_icon instanceof SVGElement
+    ) {
+        element.append(custom_icon);
+    }
+}

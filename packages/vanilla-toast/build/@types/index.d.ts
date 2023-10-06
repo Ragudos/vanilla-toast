@@ -1,4 +1,10 @@
 /**@type {import("@types/index.d.ts")} */
+import "./styles/root.css";
+import "./styles/position.css";
+import "./styles/animations.css";
+export type BoxShadowSizes = "sm" | "md" | "lg";
+export type ToastCloseButtonPositions = "inline" | "top-right" | "top-left";
+type IconPositions = "left" | "right";
 /**
  * ## Toast Positions
  * Specifies where the toast will be located
@@ -33,15 +39,88 @@ export type ToastColor = "background" | "icon" | "icon-stroke";
  */
 export type ToastImportance = "not important" | "important" | "critical";
 /**
+ * ## Toast Close Button Options
+ * The options available for a close button.
+ */
+export type ToastCloseButtonOptions = {
+    /**
+     * The position of the close button of a toast instance.
+     * If inline, then the button's position will depend on the
+     * value of @type { IconPositions }.
+     *
+     * @default
+     *
+     * top-right
+     */
+    position?: ToastCloseButtonPositions;
+    /**
+     * If you'd like to pass on a custom button. For example,
+     * adding a function that is triggered when the close button is clicked,
+     * such as "Undo".
+     */
+    custom_button?: {
+        /**
+         * Function to trigger when this button is clicked.
+         * You don't need to add the toast.dismiss() function here
+         * as it will be called for you together with this function.
+         *
+         * @param toast_id
+         * @returns void
+         */
+        on_click?: (toast_id: string) => void;
+        /**
+         * Class name to provide the custom buttom.
+         * Please do refer to the CSS properties for this
+         * button first before brute-forcing your way with !important
+         * when it does not take into effect.
+         *
+         * The initial className is toast-close-button.
+         *
+         * Take note that CSS Modules is used for this so the initial class
+         * name may not be exactly the same.
+         *
+         * With this method, you can use TailwindCSS.
+         */
+        className?: string;
+    };
+    /**
+     * How will this button be visible?
+     *
+     * Visible means it's there right off the bat.
+     *
+     * @default
+     *
+     * visible
+     */
+    appearance?: "visible" | "visible-on-hover";
+} & ({
+    type?: "text";
+    /**
+     * Please do pass in the property "type" a value of "text" if you
+     * are going to pass in a text
+     * since the fallback value for the type property is icon.
+     *
+     * @default
+     * close
+     */
+    text?: string;
+} | {
+    type?: "icon";
+    /** If this custom icon is a string,
+     *  then we append it using innerHTML.
+     *
+     * @default
+     *
+     * an X icon
+     */
+    custom_icon?: string | HTMLElement | SVGElement;
+});
+/**
  * ## Toast Options
  *
  * The options available to a toast instance or element for
  * customization on toast creation.
  *
- * Available options are:
- *
- * - duration (optional)
- * - toast_id (optional), useful if you have your own id generator
  */
 export type ToastOptions = {
     /**
@@ -57,11 +136,14 @@ export type ToastOptions = {
      *
      */
     toast_id?: string;
-    /** Whether to add a close button or not
+    /**
+     * Whether to add a close button or not. Alternatively,
+     * you can add options for this close button, or even
+     * attach you custom close button.
      *
      *  @default true
      */
-    close_button?: boolean;
+    close_button?: boolean | ToastCloseButtonOptions;
     /**
      *  Indicates how long the toast will animate in and out in milliseconds.
      *
@@ -80,17 +162,19 @@ export type ToastOptions = {
      *  If it's a string, then it will not have the toast icon class.
      *
      *
-     *  **WARNING:** This method uses innerHTML for strings
+     *  **WARNING**
+     *  This method uses innerHTML for strings
      */
     custom_icon?: string | HTMLElement | SVGElement;
     /**
      * The position a specific toast's icon.
+     * @type { IconPositions }
      *
      * @default
      *
      * "left"
      */
-    icon_position?: "left" | "right";
+    icon_position?: IconPositions;
     /**
      * The position where the toast is rendered.
      *
@@ -125,6 +209,26 @@ export type ToastOptions = {
      * "popdown"
      */
     animation?: ToastAnimations;
+    /**
+     * Even though loading toasts must be closed programatically (by you),
+     * you can still choose to not automatically close other toasts.
+     *
+     * **WARNING**
+     * If you disable this, then you must be the one to close the toast like a loading toast.
+     *
+     * @default
+     * true
+     */
+    automatically_close?: boolean;
+    /**
+     * The size of the toast's box shadow. The default is already in the CSS Property var(--toast-box-shadow).
+     * This will lazily import the constant that maps the specific CSS value for the box shadow, so take note of that
+     * if you're an optimization enthusiast.
+     *
+     *  @default
+     * sm
+     */
+    shadow_size?: BoxShadowSizes;
 };
 /**
  * ## ToastProps
@@ -196,7 +300,7 @@ interface Toast {
      * ## Loading Toast
      *
      * A toast to indicate a loading state of something. Cannot be manually closed with a button, and
-     * must be closed by you, the developer programatically as this will not have a setTimeout. Has a default
+     * must be closed by you, the developer, programatically as this will not have a setTimeout. Has a default
      * configuration of:
      *
      * - importance = "not important"
@@ -210,6 +314,11 @@ interface Toast {
      *
      * You can prematurely remove a toast if you'd like using this function. This is the function used
      * for toast removal.
+     *
+     * Responsibilities:
+     * - Removes event listeners attached to all elements of a toast instance.
+     * - Animates a toast instance out.
+     * - Removes a toast from the DOM.
      */
     dismiss: (toast_id: string) => void;
 }
