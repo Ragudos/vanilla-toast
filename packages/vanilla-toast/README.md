@@ -66,6 +66,15 @@ This library will be up to ARIA accessibility standards as much as possible. The
   // Error
   toast.error({ message: "Hello, World!" });
 
+  // Promise
+  const response = toast.promise(fetch, "https://jsonplaceholder.typicode.com/posts");
+  
+  if (!(response instanceof Error)) {
+    const data = response.json();
+
+    console.table(data);
+  }
+
   // And other methods...
 ```
 
