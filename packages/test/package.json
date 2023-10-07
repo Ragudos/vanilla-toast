@@ -7,7 +7,8 @@
   "main": "index.js",
   "scripts": {
     "browser:install": "pnpm exec playwright install --with-deps",
-    "start": "pnpm exec playwright test && pnpm exec playwright show-report"
+    "start": "pnpm exec playwright test && pnpm exec playwright show-report",
+    "dev": "node @webdevaaron/vanilla-toast/esbuild.dev.mjs"
   },
   "repository": {
     "type": "git",
@@ -23,6 +24,7 @@
   "author": "Aaron",
   "license": "MIT",
   "devDependencies": {
+    "@webdevaaron/vanilla-toast": "file:../vanilla-toast",
     "@playwright/test": "^1.38.1",
     "@types/node": "^20.8.2",
     "@vanilla-toast/vanilla-toast": "file:../vanilla-toast"

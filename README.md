@@ -1,4 +1,4 @@
-# ! STILL IN DEVELOPMENT !
+! STILL IN DEVELOPMENT !
 
 <div>
     <img src="./packages/docs/public/icon.png" width="250" alt="vanilla-toast-logo-png">
@@ -67,6 +67,15 @@ This library will be up to ARIA accessibility standards as much as possible. The
 
   // Error
   toast.error({ message: "Hello, World!" });
+
+  // Promise
+  const response = toast.promise(fetch, "https://jsonplaceholder.typicode.com/posts");
+  
+  if (!(response instanceof Error)) {
+    const data = response.json();
+
+    console.table(data);
+  }
 
   // And other methods...
 ```

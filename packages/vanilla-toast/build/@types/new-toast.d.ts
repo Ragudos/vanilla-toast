@@ -1,3 +1,7 @@
+/** IGNORE FOR NOW. TRYING TO MAKE TOASTS SMOOTH.
+ *
+ *  NEED TO PROPERLY CALCULATE SPACES, SPECIALLY IF TOASTS HAVE DIFFERENT HEIGHTS.
+ */
 import "./styles/var.css";
 import { ToastImportance, ToastPositions, ToastProps, ToastTypes } from ".";
 type ToastOptions = {

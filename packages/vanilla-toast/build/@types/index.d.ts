@@ -349,6 +349,11 @@ interface Toast {
      * - Removes a toast from the DOM.
      */
     dismiss: (toast_id: string) => void;
+    /**
+     * ## Toast Promise
+     * Runs a function for you and shows a toast depending whether an error was thrown or not.
+     */
+    promise: <T>(callback: (...args: T[]) => Promise<unknown>, args: T[]) => Promise<unknown>;
 }
 /**
  * ## Toast
