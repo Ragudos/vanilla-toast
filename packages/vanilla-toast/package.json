@@ -1,5 +1,5 @@
 {
-  "name": "@vanilla-toast/vanilla-toast",
+  "name": "@webdevaaron/vanilla-toast",
   "version": "0.3.0",
   "type": "module",
   "main": "build/index.js",

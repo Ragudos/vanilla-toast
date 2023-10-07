@@ -432,6 +432,15 @@ interface Toast {
      * - Removes a toast from the DOM.
      */
     dismiss: (toast_id: string) => void;
+
+    /**
+     * ## Toast Promise
+     * Runs a function for you and shows a toast depending whether an error was thrown or not.
+     */
+    promise: <T>(
+        callback: (...args: T[]) => Promise<unknown>,
+        args: T[],
+    ) => Promise<unknown>;
 }
 
 /**
@@ -477,6 +486,31 @@ toast.info = function (props, options) {
 
 toast.loading = function (props, options) {
     return show_toast(props, options, "loading");
+};
+
+toast.promise = async function (callback, args) {
+    const { toast_id } = show_toast(
+        { message: "loading..." },
+        { automatically_close: false, close_button: false },
+    );
+
+    const toast = $("#" + CSS.escape(toast_id));
+    const toast_message = $("#" + `toast-${CSS.escape(toast_id)}-message`);
+
+    try {
+        const results = await callback(...args);
+
+        toast_message.textContent = "Success!";
+        toast.setAttribute("data-type", "success");
+
+        return results;
+    } catch (error) {
+        toast_message.textContent = "Error";
+        toast.setAttribute("data-type", "error");
+        console.log(error?.message || error);
+
+        return error;
+    }
 };
 
 toast.dismiss = function (toast_id) {
