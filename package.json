@@ -6,6 +6,9 @@
   "engines": {
     "node": ">=18.18.0"
   },
+  "publishConfig": {
+    "registry": "https://npm.pkg.github.com"
+  },
   "scripts": {
     "build": "npm run -w @webdevaaron/vanilla-toast build",
     "dev": "npm run -w @webdevaaron/vanilla-toast dev",
