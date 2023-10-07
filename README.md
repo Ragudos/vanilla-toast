@@ -33,7 +33,47 @@ This library will be up to ARIA accessibility standards as much as possible. The
   - slide-right
   - slide-up
 
-## LICENSE
+## How to use
+
+1. From your main JavaScript file, import the necessary files:
+
+```ts
+  import { toast, initialize_toast } from "@vanilla-toast/vanilla-toast";
+  import "@vanilla-toast/vanilla-toast/build/index.css";
+```
+
+2. Mount the toast container:
+
+```ts
+  // You can pass in options to this function.
+  initialize_toast();
+
+  // or
+  window.addEventListener("DOMContentLoaded", () => {
+    initialize_toast();
+  });
+```
+
+3. To render a toast, you can do:
+
+```ts
+  // Neutral
+  toast({ message: "Hello, World!" });
+
+  // Success
+  toast.success({ messsage: "Hello, World!" });
+
+  // Error
+  toast.error({ message: "Hello, World!" });
+
+  // And other methods...
+```
+
+4. Have fun!
+
+There are various options to assign to a toast. API References to guide you are coming up soon when the website for this library becomes live.
+
+### LICENSE
 MIT License
 
 Copyright (c) 2023 Aaron

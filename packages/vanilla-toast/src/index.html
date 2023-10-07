@@ -4,47 +4,31 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Toast Tests</title>
     <link rel="stylesheet" href="./index.css" />
 </head>
 
 <body>
-    <script src="./index.js" type="module"></script>
+    <button type="button" data-testid="mount-toast">Mount toast container</button>
+    <button type="button" data-testid="toast-trigger">Show toast</button>
     <script type="module">
         import { toast, initialize_toast } from "./index.js";
 
         window.addEventListener("DOMContentLoaded", () => {
-            initialize_toast();
+            document.querySelector("[data-testid='mount-toast']").addEventListener("click", () => {
+                initialize_toast();
+            });
 
-            toast({ message: "Hello World!" });
-            setTimeout(() => {
-                toast({ message: "Hello Wodadasrld!" });
-            }, 500);
+            document.querySelector("[data-testid='toast-trigger']").addEventListener("click", () => {
 
-            setTimeout(() => {
-                toast({ message: "Hello Wordasdasdld!" });
-            }, 1000);
-
-            setTimeout(() => {
-                toast({ message: "Helfdsfsdflo Wordasdasdld!" });
-            }, 1500);
-            setInterval(() => {
-                toast({ message: "Hello World!" });
-                setTimeout(() => {
-                    toast({ message: "Hello Wodadasrld!" });
-                }, 500);
-
-                setTimeout(() => {
-                    toast({ message: "Hello Wordasdasdld!" });
-                }, 1000);
-
-                setTimeout(() => {
-                    toast({ message: "Helfdsfsdflo Wordasdasdld!" }, {
-                        toast_position: "bottom-center",
-                        max_toasts_visible: 5,
-                    });
-                }, 1500);
-            }, 5000);
+                toast.warn({ message: "Hello, World!" }, {
+                    animation: "slide-down",
+                    close_button: {
+                        position: "inline-top",
+                    },
+                    toast_position: "bottom-center"
+                });
+            });
         })
     </script>
 </body>

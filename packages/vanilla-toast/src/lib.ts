@@ -1,19 +1,4 @@
-import type {
-    ToastImportance,
-    ToastTypes,
-    ToastAnimations,
-    ToastColor,
-    ToastOptions,
-} from ".";
-
-import {
-    DEFAULT_ANIMATION,
-    DEFAULT_ANIMATION_DURATION,
-    DEFAULT_COLORS,
-    DEFAULT_DURATION,
-    DEFAULT_ICON_POSITION,
-    DEFAULT_TOAST_POSITION,
-} from "./consts";
+import type { ToastImportance, ToastTypes } from ".";
 
 /**
  * ## Query Selector
@@ -50,6 +35,19 @@ export const does_user_prefer_reduced_motion =
 const MAX_ID_LENGTH = 16;
 const MIN_ID_LENGTH = 6;
 const alpha_numericals = "abcdefghijklmnopqrstuvwxyz0123456789";
+
+export function toast_status(toast_card: HTMLElement, toast_type: ToastTypes) {
+    if (
+        toast_type == "loading" ||
+        toast_type == "success" ||
+        toast_type == "warn" ||
+        toast_type == "error"
+    ) {
+        toast_card.setAttribute("role", "alert");
+    } else {
+        toast_card.setAttribute("role", "status");
+    }
+}
 
 /**
  * ## gen_random_id()
@@ -181,66 +179,6 @@ export function get_importance(type: ToastTypes): ToastImportance {
     }
 
     return importance;
-}
-
-export function init(
-    options?: Partial<ToastOptions>,
-    type: ToastTypes = "neutral",
-) {
-    let toast_container_provided_duration: number;
-
-    if (toast_container) {
-        toast_container_provided_duration =
-            +toast_container.getAttribute("data-duration")!;
-    } else {
-        toast_container_provided_duration = +$("#toast-container")!;
-    }
-
-    let enter_animation_duration: number;
-    let exit_animation_duration: number;
-    let duration: number;
-    let toast_id: string;
-    let importance: ToastImportance;
-    let color: ToastColor;
-    let animation: ToastAnimations;
-
-    if (options) {
-        duration =
-            options?.duration ||
-            toast_container_provided_duration ||
-            DEFAULT_DURATION;
-        toast_id = options?.toast_id || gen_random_id();
-        enter_animation_duration =
-            options?.animation_duration?.in || DEFAULT_ANIMATION_DURATION;
-        exit_animation_duration =
-            options?.animation_duration?.out || DEFAULT_ANIMATION_DURATION;
-        color = options?.colors || DEFAULT_COLORS;
-        importance = options?.importance || get_importance(type);
-        animation = options?.animation || DEFAULT_ANIMATION;
-    } else {
-        duration = toast_container_provided_duration || DEFAULT_DURATION;
-        toast_id = gen_random_id();
-        enter_animation_duration = DEFAULT_ANIMATION_DURATION;
-        exit_animation_duration = DEFAULT_ANIMATION_DURATION;
-        color = DEFAULT_COLORS;
-        importance = get_importance(type);
-        animation = DEFAULT_ANIMATION;
-    }
-
-    return {
-        animation_duration: {
-            in: enter_animation_duration,
-            out: exit_animation_duration,
-        },
-        duration,
-        toast_id,
-        icon_position: options?.icon_position || DEFAULT_ICON_POSITION,
-        toast_position: options?.toast_position || DEFAULT_TOAST_POSITION,
-        importance,
-        colors: color,
-        animation,
-        automatically_close: options?.automatically_close ?? true,
-    };
 }
 
 /**

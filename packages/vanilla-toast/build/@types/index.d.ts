@@ -1,9 +1,10 @@
 /**@type {import("@types/index.d.ts")} */
+export { initialize_toast } from "./toast";
 import "./styles/root.css";
 import "./styles/position.css";
 import "./styles/animations.css";
 export type BoxShadowSizes = "sm" | "md" | "lg";
-export type ToastCloseButtonPositions = "inline" | "top-right" | "top-left";
+export type ToastCloseButtonPositions = "inline" | "inline-top" | "top-right" | "top-left";
 type IconPositions = "left" | "right";
 /**
  * ## Toast Positions
@@ -18,9 +19,9 @@ export type ToastPositions = "top-left" | "top-center" | "top-right" | "bottom-l
  * - Error means an x icon and a red background
  * - Warn means a warning icon and a yellow background
  * - Info means a letter i icon and a blue background
- * - Loading means a non-closable toast and a loading icon with a plain background
+ * - Loading means a loading toast with a loading icon and a plain background
  */
-export type ToastTypes = "neutral" | "success" | "error" | "warn" | "info" | "loading";
+export type ToastTypes = "neutral" | "success" | "error" | "warn" | "info" | "loading" | "headless";
 /**
  * Various toast animations you can apply to the toast on either enter or exit. This will be
  * applied to the CSS property of var(--animation-name), which will be used by the toast.
@@ -31,7 +32,7 @@ export type ToastAnimations = "popdown" | "popup" | "fade-in" | "slide-up" | "sl
  *
  * The places which the default toast colors will apply to
  */
-export type ToastColor = "background" | "icon" | "icon-stroke";
+export type ToastColor = "background" | "icon" | "icon-stroke" | "none";
 /**
  * ## Toast Importance
  *
@@ -233,26 +234,29 @@ export type ToastOptions = {
      * sm
      */
     shadow_size?: BoxShadowSizes;
+    /** Direction of text */
+    dir?: "ltr" | "rtl";
     /**
-     * The amount of pixels a toast should be dragged away from
-     * its original position based on the desired location
-     * &#40;i.e. horizontal&#41; before it's closed.
+     * Whether to close a toast when it's swiped based on the value of the property swipe_direction.
      *
      * @default
      *
-     * 30
+     * false
      */
-    drag_threshold_before_closure?: number;
-    /**
-     * The direction which a user can drag the toast.
-     * This will determine whether a toast should be closed based
-     * on the threshold you provide.
-     *
-     * @default
-     *
-     * "horizontal"
-     */
-    drag_direction?: "horizontal" | "vertical";
+    close_on_swipe?: boolean | {
+        /**
+         * The amount of pixels a toast should be dragged away from
+         * its original position based on the desired location
+         * &#40;i.e. horizontal&#41; before it's closed.
+         *
+         * This is only available if you enable the option: close_on_swipe
+         *
+         * @default
+         *
+         * 30
+         */
+        swipe_threshold_before_closure?: number;
+    };
 };
 /**
  * ## ToastProps
@@ -368,4 +372,3 @@ interface Toast {
  * @see https://developer.mozilla.org/en-US/docs/Web/CSS/@media/prefers-reduced-motion
  */
 export declare const toast: Toast;
-export {};

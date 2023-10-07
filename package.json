@@ -9,6 +9,7 @@
   "scripts": {
     "build": "npm run -w @vanilla-toast/vanilla-toast build",
     "dev": "npm run -w @vanilla-toast/vanilla-toast dev",
+    "test": "npm run -w @vanilla-toast/test start",
     "lint": "eslint ./",
     "lint:fix": "eslint ./ --fix",
     "type-check": "tsc --noEmit",

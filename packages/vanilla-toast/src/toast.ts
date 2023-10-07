@@ -8,9 +8,15 @@ import {
 } from ".";
 import {
     close_button_aborters_hashmaps,
+    DEFAULT_ANIMATION,
+    DEFAULT_ANIMATION_DURATION,
     DEFAULT_BOX_SHADOW_SIZE,
     DEFAULT_CLOSE_BUTTON_POSITION,
+    DEFAULT_COLORS,
+    DEFAULT_DURATION,
+    DEFAULT_ICON_POSITION,
     DEFAULT_MAX_TOASTS_VISIBLE,
+    DEFAULT_TOAST_POSITION,
     timer_hashmaps,
     TOAST_POSITIONS,
 } from "./consts";
@@ -19,10 +25,10 @@ import {
     $create,
     append_custom_icon_to_element,
     does_user_prefer_reduced_motion_query,
-    dom_reflow,
+    gen_random_id,
     get_icon,
-    init,
     toast_container,
+    toast_status,
 } from "./lib";
 
 import style from "./styles/style.module.css";
@@ -41,6 +47,9 @@ export type ToastContainerOptions = {
      * If they are, then new toasts will sit on top of the previous toast. This
      * is great to not clutter the screen.
      *
+     * If this is enabled, then toasts can be expanded by the shortcut Alt + T,
+     * or by hovering over the toasts.
+     *
      * @default
      *
      * false
@@ -57,7 +66,28 @@ export type ToastContainerOptions = {
      *
      * 3
      */
-    max_toasts_visible: number;
+    max_toasts_visible?: number;
+
+    /**
+     * If you want to hide overflowing toasts. This can only
+     * be set on initialization.
+     */
+    hide_overflow_toast?: boolean;
+
+    /**
+     * The offset of the toast container. This determines the amount of padding or
+     * space the edges of the toasts from the edges of its parent container will have.
+     * You can also set this via the CSS properties. By default, the CSS property
+     * is == to 95% to the viewport&apos;s dimensions;
+     *
+     * - --toast-container-width
+     * - --toast-container-height
+     *
+     * @default
+     *
+     * "95% of its container
+     */
+    container_offset?: number;
 };
 
 const aria_live: {
@@ -73,7 +103,17 @@ const aria_live: {
  * @param options
  */
 export function initialize_toast(options?: ToastContainerOptions) {
-    const toast_holder = $create("ol");
+    if (document.getElementById("toast-holder")) {
+        return;
+    }
+
+    let toast_main_container = toast_container;
+
+    if (!toast_container) {
+        toast_main_container = $create("section");
+    }
+
+    const toast_holder = $create("div");
 
     toast_holder.classList.add(style["toast-holder"]);
     toast_holder.id = "toast-holder";
@@ -82,24 +122,28 @@ export function initialize_toast(options?: ToastContainerOptions) {
         options?.max_toasts_visible?.toString() ||
             DEFAULT_MAX_TOASTS_VISIBLE.toString(),
     );
+    toast_holder.setAttribute("data-testid", "toast-holder");
+    toast_main_container.title = "Notifications";
 
     if (options?.stacked) {
+        toast_main_container.setAttribute("aria-label", "Notifications");
         toast_holder.setAttribute("data-stacked", options?.stacked + "");
     }
 
+    if (options?.hide_overflow_toast) {
+        toast_holder.setAttribute("data-hide-overflow-toast", "true");
+    }
+
+    if (options?.container_offset != undefined) {
+        toast_main_container.style.width = `calc(100% - ${options.container_offset}px)`;
+        toast_main_container.style.height = `calc(100% - ${options.container_offset}px)`;
+    }
+
+    toast_main_container.classList.add(style["toast-container"]);
+    toast_main_container.append(toast_holder);
+
     if (!toast_container) {
-        const created_toast_container = $create("section");
-
-        created_toast_container.classList.add(style["toast-container"]);
-        created_toast_container.setAttribute(
-            "aria-label",
-            "Notifications. Press (Alt + T) to expand",
-        );
-
-        created_toast_container.append(toast_holder);
-        document.body.append(created_toast_container);
-    } else {
-        toast_container.append(toast_holder);
+        document.body.append(toast_main_container);
     }
 }
 
@@ -114,21 +158,56 @@ export function initialize_toast(options?: ToastContainerOptions) {
  */
 export function show_toast(
     props: ToastProps,
-    options?: Partial<ToastOptions>,
+    {
+        animation = DEFAULT_ANIMATION,
+        close_button = true,
+        toast_position = DEFAULT_TOAST_POSITION,
+        toast_id = undefined,
+        custom_icon = undefined,
+        importance = "not important",
+        icon_position = DEFAULT_ICON_POSITION,
+        animation_duration = {
+            in: DEFAULT_ANIMATION_DURATION,
+            out: DEFAULT_ANIMATION_DURATION,
+        },
+        shadow_size = DEFAULT_BOX_SHADOW_SIZE,
+        automatically_close = true,
+        dir = "ltr",
+        colors = DEFAULT_COLORS,
+        duration = DEFAULT_DURATION,
+    }: Partial<ToastOptions> = {
+        animation: DEFAULT_ANIMATION,
+        close_button: true,
+        toast_position: DEFAULT_TOAST_POSITION,
+        toast_id: undefined,
+        custom_icon: undefined,
+        animation_duration: {
+            in: DEFAULT_ANIMATION_DURATION,
+            out: DEFAULT_ANIMATION_DURATION,
+        },
+        icon_position: DEFAULT_ICON_POSITION,
+        importance: "not important",
+        shadow_size: undefined,
+        automatically_close: true,
+        dir: "ltr",
+        colors: DEFAULT_COLORS,
+        duration: DEFAULT_DURATION,
+    },
     type: ToastTypes = "neutral",
 ): ToastReturn {
-    const toast_container = $("#toast-holder")!;
+    const toast_container = $("#toast-holder")! as HTMLElement;
 
     if (!toast_container) {
         const error = new Error(
             "Toast container has not been mounted yet. Try calling initialize_toast() first.",
         );
 
+        alert(error);
         console.error(error);
         throw error;
     }
 
-    if (type == "loading" && options?.close_button == true) {
+    if (type == "loading" && close_button == true) {
         alert("A loading toast should not be manually closed.");
         console.error(
             new Error("A loading toast should not be manually closed."),
@@ -137,32 +216,20 @@ export function show_toast(
         throw new Error("A loading toast should not be manually closed.");
     }
 
-    if (options && options.close_button == undefined) {
-        options.close_button = true;
-    }
-
-    const {
-        animation_duration,
-        duration,
-        toast_id,
-        icon_position,
-        toast_position,
-        importance,
-        colors,
-        animation,
-        automatically_close,
-    } = init(options, type);
-
     if (!toast_container.classList.contains("toast-" + toast_position)) {
         for (const pos of TOAST_POSITIONS) {
             toast_container.classList.remove("toast-" + pos);
         }
     }
 
+    if (!toast_id) {
+        toast_id = gen_random_id();
+    }
+
     toast_container.classList.add("toast-" + toast_position);
 
     const { title, message } = props;
-    const toast_card = $create("li");
+    const toast_card = $create("div");
     const toast_text_container = $create("div");
     const toast_message = $create("p");
 
@@ -180,43 +247,39 @@ export function show_toast(
         toast_title.textContent = title;
     }
 
-    if (Boolean(options?.custom_icon) || type != "neutral") {
+    if (Boolean(custom_icon) || type != "neutral") {
         toast_icon_container = $create("div");
         toast_icon_container.classList.add(style["toast-icon-container"]);
 
-        if (options?.custom_icon) {
-            append_custom_icon_to_element(
-                toast_icon_container,
-                options?.custom_icon,
-            );
+        if (custom_icon) {
+            append_custom_icon_to_element(toast_icon_container, custom_icon);
 
-            if (typeof options?.custom_icon != "string") {
-                options?.custom_icon.classList.add(style["toast-icon"]);
+            if (typeof custom_icon != "string") {
+                custom_icon.classList.add(style["toast-icon"]);
             }
         } else {
-            import("./lib").then((module) => {
-                const svg = module.get_icon(type);
+            const svg = get_icon(type);
 
-                svg.classList.add(style["toast-icon"]);
-                toast_icon_container?.append(svg);
-            });
+            svg.classList.add(style["toast-icon"]);
+            toast_icon_container?.append(svg);
         }
     }
 
     toast_card.id = toast_id;
     toast_card.classList.add(style["toast-card"]);
-    toast_card.setAttribute("role", "alert");
+    toast_card.setAttribute("data-vanilla-toast", "true");
+    toast_status(toast_card, type);
+    toast_card.setAttribute("aria-atomic", "true");
     toast_card.setAttribute("data-type", type);
     toast_card.setAttribute("aria-live", aria_live[importance]);
     toast_card.setAttribute("data-color-type", colors);
+    toast_card.setAttribute("dir", dir);
 
-    if (options?.shadow_size) {
+    if (shadow_size) {
         import("./consts").then((module) => {
             toast_card.style.setProperty(
                 "--toast-box-shadow",
-                module.BOX_SHADOW_SIZES[
-                    options?.shadow_size || DEFAULT_BOX_SHADOW_SIZE
-                ],
+                module.BOX_SHADOW_SIZES[shadow_size || DEFAULT_BOX_SHADOW_SIZE],
             );
         });
     }
@@ -262,25 +325,23 @@ export function show_toast(
 
     toast_text_container.append(toast_message);
 
-    if (!options || options.close_button) {
+    if (type != "loading" && close_button) {
         let handle_close_button_click: undefined | ((_e: MouseEvent) => void);
 
         toast_close_button = $create("button");
 
-        if (options && typeof options.close_button != "boolean") {
-            if (options.close_button?.appearance == "visible-on-hover") {
+        if (typeof close_button != "boolean") {
+            if (close_button?.appearance == "visible-on-hover") {
                 toast_card.classList.add(
                     style["toast-card-close-button-hover"],
                 );
             }
 
-            if (options.close_button.custom_button?.on_click) {
+            if (close_button.custom_button?.on_click) {
                 handle_close_button_click = function () {
-                    if (typeof options?.close_button != "boolean") {
-                        if (options?.close_button?.custom_button?.on_click) {
-                            options?.close_button?.custom_button?.on_click(
-                                toast_id,
-                            );
+                    if (typeof close_button != "boolean") {
+                        if (close_button?.custom_button?.on_click) {
+                            close_button?.custom_button?.on_click(toast_id);
                         }
                     }
 
@@ -295,12 +356,12 @@ export function show_toast(
             toast_close_button.classList.add(
                 style[
                     "toast-close-button-" +
-                        (options?.close_button?.position ||
+                        (close_button?.position ||
                             DEFAULT_CLOSE_BUTTON_POSITION)
                 ],
             );
 
-            if (options.close_button.type == "text") {
+            if (close_button.type == "text") {
                 toast_close_button.classList.add(
                     style["toast-close-button-text"],
                 );
@@ -308,13 +369,12 @@ export function show_toast(
                     "--toast-close-button-border-radius",
                     "0.25rem",
                 );
-                toast_close_button.textContent =
-                    options.close_button.text || "close";
-            } else if (options.close_button?.type == "icon") {
-                if (options.close_button.custom_icon) {
+                toast_close_button.textContent = close_button?.text || "close";
+            } else if (close_button?.type == "icon") {
+                if (close_button.custom_icon) {
                     append_custom_icon_to_element(
                         toast_close_button,
-                        options?.close_button?.custom_icon,
+                        close_button?.custom_icon,
                     );
                 } else {
                     const svg = get_icon("close");
@@ -329,9 +389,9 @@ export function show_toast(
                 toast_close_button?.append(svg);
             }
 
-            if (options.close_button.custom_button?.className) {
+            if (close_button?.custom_button?.className) {
                 toast_close_button.className +=
-                    " " + options.close_button.custom_button.className;
+                    " " + close_button.custom_button.className;
             }
         } else {
             handle_close_button_click = function () {
@@ -345,6 +405,13 @@ export function show_toast(
             toast_close_button.classList.add(
                 style["toast-close-button-" + DEFAULT_CLOSE_BUTTON_POSITION],
             );
+        }
+
+        if (
+            typeof close_button != "boolean" &&
+            close_button.position == "inline-top"
+        ) {
+            toast_close_button.classList.add("toast-close-button-inline-top");
         }
 
         toast_close_button.setAttribute(
@@ -377,11 +444,12 @@ export function show_toast(
 
     if (type != "neutral" && icon_position == "left") {
         toast_card.append(toast_icon_container as Node);
-    } else {
+    } else if (type != "loading") {
         if (
-            (typeof options?.close_button != "boolean" &&
-                options?.close_button?.position == "inline") ||
-            options?.close_button
+            (typeof close_button != "boolean" &&
+                (close_button?.position == "inline" ||
+                    close_button?.position == "inline-top")) ||
+            close_button
         ) {
             toast_card.append(toast_close_button as HTMLButtonElement);
         }
@@ -392,19 +460,56 @@ export function show_toast(
     if (type != "neutral" && icon_position == "right") {
         toast_card.append(toast_icon_container as Node);
         toast_text_container.style.textAlign = "right";
-    } else {
+    } else if (type != "loading") {
         if (
-            !options ||
-            (typeof options?.close_button != "boolean" &&
-                options?.close_button?.position == "inline") ||
-            options?.close_button
+            (typeof close_button != "boolean" &&
+                (close_button?.position == "inline" ||
+                    close_button?.position == "inline-top")) ||
+            close_button
         ) {
             toast_card.append(toast_close_button as HTMLButtonElement);
         }
     }
 
+    if (
+        toast_position == "bottom-center" ||
+        toast_position == "bottom-left" ||
+        toast_position == "bottom-right"
+    ) {
+        toast_container.style.flexDirection = "column";
+    }
+
     toast_container.append(toast_card);
-    hide_old_toasts();
+
+    if (toast_container.getAttribute("data-hide-overflow-toasts") == "true") {
+        import("./hide-toast").then((module) => {
+            module.hide_old_toasts();
+        });
+    }
+
+    // if (options?.close_on_swipe) {
+    //     toast_card.addEventListener("pointermove", (e) => {
+    //         if (toast_card.getAttribute("data-swipe") == "true") {
+    //             const rect = toast_card.getBoundingClientRect();
+
+    //             console.log(rect);
+
+    //             const x = e.clientX;
+    //             const y = e.clientY;
+
+    //             console.log(e);
+    //         }
+    //     });
+
+    //     toast_card.addEventListener("pointerdown", () => {
+    //         toast_card.setAttribute("data-swipe", "true");
+    //     });
+
+    //     toast_card.addEventListener("pointerup", () => {
+    //         console.log("released!");
+    //         toast_card.setAttribute("data-swipe", "false");
+    //     });
+    // }
 
     if (type != "loading" && automatically_close == true) {
         const timeout = setTimeout(
@@ -420,53 +525,6 @@ export function show_toast(
     }
 
     return { toast_id } as { toast_id: string };
-}
-
-function hide_old_toasts() {
-    const toast_container = $("#toast-holder");
-    const toast_children = toast_container.children;
-
-    const max_toasts =
-        +toast_container.getAttribute("data-max-toasts") ||
-        DEFAULT_MAX_TOASTS_VISIBLE;
-
-    if (toast_children.length >= max_toasts) {
-        const latest_old_toast = $(
-            "[data-latest-old-toast='true']",
-        ) as HTMLElement;
-
-        let new_latest_old_toast =
-            latest_old_toast?.nextElementSibling as HTMLElement;
-
-        if (!latest_old_toast) {
-            new_latest_old_toast = toast_children[0] as HTMLElement;
-        }
-
-        if (latest_old_toast) {
-            latest_old_toast.removeAttribute("data-latest-old-toast");
-            latest_old_toast.setAttribute("aria-hidden", "true");
-            latest_old_toast.style.setProperty(
-                "--toast-animation-direction",
-                "reverse",
-            );
-            latest_old_toast.style.setProperty(
-                "--toast-animation-fill-mode",
-                "forwards",
-            );
-
-            const animation_duration = latest_old_toast.style.getPropertyValue(
-                "--toast-animation-duration",
-            );
-
-            setTimeout(() => {
-                latest_old_toast.style.position = "absolute";
-            }, +animation_duration.split("ms")[0]);
-
-            dom_reflow(latest_old_toast);
-        }
-
-        new_latest_old_toast.setAttribute("data-latest-old-toast", "true");
-    }
 }
 
 // FOR FUTURE FEATURE, DRAGGABLE TOAST

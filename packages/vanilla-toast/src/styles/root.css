@@ -1,17 +1,12 @@
-:root {
-    --toast-container-height: 95%;
-    --toast-container-width: 95%;
 
+[data-vanilla-toast] {
     --toast-border-width: 1px;
     --toast-border-style: solid;
     --toast-border-color: transparent;
 
     --toast-loading-color: #000;
 
-    --toast-width: 100%;
     --toast-height: 1.5rem;
-
-    --toast-spacing: 0.5rem;
 
     --toast-padding: 0.5rem 1rem;
 
@@ -25,7 +20,7 @@
     --toast-title-font-weight: 700;
 
     --toast-shadow-color: hsla(0, 0%, 2%, 0.25);
-    --toast-box-shadow: 0px 2px 4px var(--toast-shadow-color);
+    --toast-box-shadow: 0px 4px 12px var(--toast-shadow-color);
 
     --toast-ease: ease-in;
 
@@ -54,8 +49,8 @@
     --toast-icons-stroke-width: 2.5px;
 }
 
-.dark,
-html[style='color-scheme: dark;'] {
+.dark [data-vanilla-toast],
+html[style='color-scheme: dark;'] [data-vanilla-toast] {
     --toast-border-color: #fff;
 
     --toast-loading-color: #fff;
@@ -82,10 +77,4 @@ html[style='color-scheme: dark;'] {
     border-radius: 100%;
     border: 1px solid var(--toast-text-color);
     border-right-color: gray;
-}
-
-@media screen and (min-width: 480px) {
-    :root {
-        --toast-width: clamp(5rem, 90%, 18rem);
-    }
 }

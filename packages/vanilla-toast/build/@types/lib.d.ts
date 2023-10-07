@@ -1,4 +1,4 @@
-import type { ToastImportance, ToastTypes, ToastAnimations, ToastColor, ToastOptions } from ".";
+import type { ToastImportance, ToastTypes } from ".";
 /**
  * ## Query Selector
  * A shorthand for:
@@ -30,6 +30,7 @@ export declare const $create: {
 export declare const toast_container: HTMLElement;
 export declare const does_user_prefer_reduced_motion_query: MediaQueryList;
 export declare const does_user_prefer_reduced_motion: boolean;
+export declare function toast_status(toast_card: HTMLElement, toast_type: ToastTypes): void;
 /**
  * ## gen_random_id()
  * Synchronously generates a random id using Math.random along a string of alphanumericals using a for loop.
@@ -60,20 +61,6 @@ export declare function get_icon(type: ToastTypes | "close"): HTMLElement | SVGS
  * - "critical" == "assertive"
  */
 export declare function get_importance(type: ToastTypes): ToastImportance;
-export declare function init(options?: Partial<ToastOptions>, type?: ToastTypes): {
-    animation_duration: {
-        in: number;
-        out: number;
-    };
-    duration: number;
-    toast_id: string;
-    icon_position: "left" | "right";
-    toast_position: import(".").ToastPositions;
-    importance: ToastImportance;
-    colors: ToastColor;
-    animation: ToastAnimations;
-    automatically_close: boolean;
-};
 /**
  * ## dom_reflow()
  * Reflow the given element to reset its animation state.

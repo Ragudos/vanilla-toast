@@ -4,6 +4,8 @@
 }
 
 .toast-container {
+    --toast-container-height: 95%;
+    --toast-container-width: 95%;
     pointer-events: none;
     position: fixed;
     width: var(--toast-container-width, 99%);
@@ -13,21 +15,25 @@
 }
 
 .toast-holder {
+    --toast-width: 100%;
+    --toast-spacing: 1rem;
     position: absolute;
+    display: flex;
+    flex-direction: column-reverse;
+    gap: var(--toast-spacing);
 
     width: var(--toast-width, clamp(5rem, 100%, 20rem));
     height: fit-content;
 }
 
+@media screen and (min-width: 480px) {
+    .toast-holder {
+        --toast-width: clamp(5rem, 90%, 18rem);
+    }
+}
+
 .toast-card {
-    position: relative;
-
-    pointer-events: all;
-
     min-height: var(--toast-height);
-
-    margin-top: var(--toast-spacing);
-    margin-bottom: var(--toast-spacing);
 
     border: var(--toast-border-width, 2px) var(--toast-border-style, solid) var(--toast-border-color, var(--toast-text-color, inherit));
 
@@ -37,7 +43,7 @@
     background: var(--toast-background-color, inherit);
     color: var(--toast-text-color, inherit);
 
-    box-shadow: var(--toast-box-shadow, 0px 2px 4px hsla(0, 0%, 0%, 0.25));
+    box-shadow: var(--toast-box-shadow, 0px 4px 12px hsla(0, 0%, 0%, 0.25));
 
     display: flex;
     align-items: var(--toast-align-items, center);
@@ -45,6 +51,12 @@
     justify-content: space-between;
 
     transform-origin: var(--toast-transform-origin, center);
+
+    will-change: transform, opacity, height;
+    transition-property: transform, opacity;
+
+    pointer-events: all;
+    touch-action: auto;
 
     animation-name: var(--toast-animation, popup);
     animation-timing-function: var(--toast-ease, ease-in-out);
@@ -173,4 +185,11 @@
 
 .toast-close-button-text:hover {
     transform: scale(1);
+}
+
+.toast-close-button-inline-top {
+    position: absolute;
+    top: 0.1rem;
+    right: 0.1rem;
+    box-shadow: none;
 }

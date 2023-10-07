@@ -15,7 +15,11 @@ import "./styles/position.css";
 import "./styles/animations.css";
 
 export type BoxShadowSizes = "sm" | "md" | "lg";
-export type ToastCloseButtonPositions = "inline" | "top-right" | "top-left";
+export type ToastCloseButtonPositions =
+    | "inline"
+    | "inline-top"
+    | "top-right"
+    | "top-left";
 type IconPositions = "left" | "right";
 
 /**
@@ -46,7 +50,8 @@ export type ToastTypes =
     | "error"
     | "warn"
     | "info"
-    | "loading";
+    | "loading"
+    | "headless";
 
 /**
  * Various toast animations you can apply to the toast on either enter or exit. This will be
@@ -66,7 +71,7 @@ export type ToastAnimations =
  *
  * The places which the default toast colors will apply to
  */
-export type ToastColor = "background" | "icon" | "icon-stroke";
+export type ToastColor = "background" | "icon" | "icon-stroke" | "none";
 
 /**
  * ## Toast Importance
@@ -289,27 +294,32 @@ export type ToastOptions = {
      */
     shadow_size?: BoxShadowSizes;
 
-    /**
-     * The amount of pixels a toast should be dragged away from
-     * its original position based on the desired location
-     * &#40;i.e. horizontal&#41; before it's closed.
-     *
-     * @default
-     *
-     * 30
-     */
-    drag_threshold_before_closure?: number;
+    /** Direction of text */
+    dir?: "ltr" | "rtl";
 
     /**
-     * The direction which a user can drag the toast.
-     * This will determine whether a toast should be closed based
-     * on the threshold you provide.
+     * Whether to close a toast when it's swiped based on the value of the property swipe_direction.
      *
      * @default
      *
-     * "horizontal"
+     * false
      */
-    drag_direction?: "horizontal" | "vertical";
+    close_on_swipe?:
+        | boolean
+        | {
+              /**
+               * The amount of pixels a toast should be dragged away from
+               * its original position based on the desired location
+               * &#40;i.e. horizontal&#41; before it's closed.
+               *
+               * This is only available if you enable the option: close_on_swipe
+               *
+               * @default
+               *
+               * 30
+               */
+              swipe_threshold_before_closure?: number;
+          };
 };
 
 /**
