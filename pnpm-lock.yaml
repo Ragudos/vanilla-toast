@@ -53,6 +53,9 @@ importers:
       '@types/node':
         specifier: ^20.8.2
         version: 20.8.2
+      '@vanilla-toast/vanilla-toast':
+        specifier: file:../vanilla-toast
+        version: file:packages/vanilla-toast
 
   packages/vanilla-toast:
     devDependencies:
@@ -1577,5 +1580,5 @@ packages:
 
   file:packages/vanilla-toast:
     resolution: {directory: packages/vanilla-toast, type: directory}
-    name: '@vanilla-toast/vanilla-toast'
+    name: '@webdevaaron/vanilla-toast'
     dev: true
