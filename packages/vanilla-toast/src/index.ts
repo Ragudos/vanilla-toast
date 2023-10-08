@@ -439,7 +439,7 @@ interface Toast {
      */
     promise: <T>(
         callback: (...args: T[]) => Promise<unknown>,
-        args: T[],
+        ...args: T[]
     ) => Promise<unknown>;
 }
 
@@ -488,25 +488,32 @@ toast.loading = function (props, options) {
     return show_toast(props, options, "loading");
 };
 
-toast.promise = async function (callback, args) {
+toast.promise = async function (callback, ...args) {
     const { toast_id } = show_toast(
         { message: "loading..." },
         { automatically_close: false, close_button: false },
+        "loading",
     );
-
-    const toast = $("#" + CSS.escape(toast_id));
-    const toast_message = $("#" + `toast-${CSS.escape(toast_id)}-message`);
 
     try {
         const results = await callback(...args);
 
-        toast_message.textContent = "Success!";
-        toast.setAttribute("data-type", "success");
+        toast.dismiss(toast_id);
+
+        show_toast(
+            { message: "Success!" },
+            { close_button: { position: "inline-top" } },
+            "success",
+        );
 
         return results;
     } catch (error) {
-        toast_message.textContent = "Error";
-        toast.setAttribute("data-type", "error");
+        toast.dismiss(toast_id);
+        show_toast(
+            { message: "Success!" },
+            { close_button: { position: "inline-top" } },
+            "error",
+        );
         console.log(error?.message || error);
 
         return error;

@@ -263,6 +263,8 @@ export function show_toast(
             svg.classList.add(style["toast-icon"]);
             toast_icon_container?.append(svg);
         }
+
+        toast_icon_container.id = "toast-" + toast_id + "-icon";
     }
 
     toast_card.id = toast_id;
