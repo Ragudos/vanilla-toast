@@ -11,9 +11,12 @@ const DEFAULT_OPTIONS: ToastOptions = {
     // if there is. If not, we set the default value instead.
     position: undefined,
     lifetime: 5000,
-    animation_duration: 500,
+    animation_duration: 250,
     importance: "important",
+    automatically_close: true,
 };
+
+const media_query = window.matchMedia("(prefers-reduced-motion)");
 
 export function get_default(options?: ToastOptions): ToastOptions {
     if (!options) {
@@ -26,8 +29,15 @@ export function get_default(options?: ToastOptions): ToastOptions {
         // Since negation works on 0 as well. We need it to be 0 if a users
         // prefers to have no animations. With an animation duration of 0, our
         // transitions/animations would then be instant.
-        if (options.animation_duration != 0 && !options.animation_duration) {
-            options.animation_duration = DEFAULT_OPTIONS.animation_duration;
+        if (media_query.matches) {
+            options.animation_duration = 0;
+        } else {
+            if (
+                options.animation_duration != 0 &&
+                !options.animation_duration
+            ) {
+                options.animation_duration = DEFAULT_OPTIONS.animation_duration;
+            }
         }
 
         if (!options.importance) {
@@ -51,6 +61,10 @@ export function get_default(options?: ToastOptions): ToastOptions {
             ) {
                 options.position.y = DEFAULT_POSITION.y;
             }
+        }
+
+        if (options.automatically_close == undefined) {
+            options.automatically_close = true;
         }
 
         return options;

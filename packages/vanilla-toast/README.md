@@ -1,3 +1,5 @@
+! STILL IN DEVELOPMENT ! FUNCTIONS ARE PRONE TO CHANGE
+
 <div>
     <img src="./packages/docs/public/icon.png" width="250" alt="vanilla-toast-logo-png">
     <br />

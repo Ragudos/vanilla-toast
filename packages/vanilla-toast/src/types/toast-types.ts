@@ -32,9 +32,13 @@ export type ToastOptions = {
     importance?: keyof typeof aria_live_map;
     lifetime?: number;
     animation_duration?: number;
+    automatically_close?: boolean;
 };
 
-export type ToastListener = (toast: Toast) => void;
+export type ToastListener = (
+    toast: Toast,
+    type: "add" | "remove" | "animate-out",
+) => void;
 
 export interface ToastInterface {
     id: string;
@@ -46,6 +50,11 @@ export interface ToastInterface {
      */
     is_dismissed: boolean;
     type: ToastTypes;
+    idx: number;
+    z_index: number;
+    initial_height: number;
+    offset: number;
+    automatically_close: boolean;
 }
 
 export interface StoreInterface {
@@ -72,12 +81,9 @@ export interface StoreInterface {
         _type?: ToastTypes,
     ): ReturnValue;
 
-    /** Calls all active listeners to update their state */
-    update(_toast: Toast): void;
+    /** Removes a toast */
+    dismiss(toast_id: string): void;
 
-    /** Removes a toast from state and from the DOM.
-     *
-     * **Only call this once for each toast.**
-     */
-    $remove_toast(_toast_id: string): void;
+    /** Calls all active listeners to update their state */
+    update(_toast: Toast, type: "add" | "remove" | "animate-out"): void;
 }

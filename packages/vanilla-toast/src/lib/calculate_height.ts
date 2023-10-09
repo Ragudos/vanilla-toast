@@ -5,7 +5,7 @@ import { ToastObserver } from "../store";
 export function calculate_total_height_of_previous_toasts(toast: Toast) {
     return [...ToastObserver.toasts.values()].reduce(
         (prev, curr, curr_index) => {
-            if (toast.z_index >= curr_index) {
+            if (curr_index <= toast.z_index) {
                 return prev;
             }
 

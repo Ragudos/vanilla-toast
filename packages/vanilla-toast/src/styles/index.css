@@ -62,6 +62,9 @@
 
     opacity: var(--toast-opacity, 0);
     transform: translateY(var(--toast-translate-y, 0)) scale(var(--toast-scale, 1));
+
+    pointer-events: all;
+    touch-action: auto;
 }
 
 [data-vanilla-toast] {
@@ -72,6 +75,11 @@
 [data-vanilla-toast][data-mounted="true"] {
     --toast-translate-y: calc(var(--lift) * var(--toast-offset));
     --toast-opacity: 1;
+}
+
+[data-vanilla-toast][data-dismissed="true"] {
+    --toast-translate-y: calc(var(--lift) * var(--toast-offset) + var(--lift) * -100%);
+    --toast-opacity: 0;
 }
 
 [data-toast-container][data-position-x="left"] [data-vanilla-toast],

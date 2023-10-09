@@ -1,4 +1,4 @@
-! STILL IN DEVELOPMENT !
+! STILL IN DEVELOPMENT ! FUNCTIONS ARE PRONE TO CHANGE
 
 <div>
     <img src="./packages/docs/public/icon.png" width="250" alt="vanilla-toast-logo-png">
@@ -15,7 +15,7 @@
 A toast library for vanilla lovers :heartpulse:.
 
 ## Why vanilla toast?
-Well, with all the amount of frameworks out there, it's become overwhelming. They are great tools, yes, but the abstraction is crazy and I did not get a change to learn about the lower level APIs like EventSource, Websocket, Clusters for concurrency, ArrayBuffers, etc. That's why I decided to make this toast library to make my life easier when I develop client-side apps with Vanilla JavaScript.
+Well, with all the amount of frameworks out there, it's become overwhelming. They are great tools, yes, but the abstraction is crazy and I did not get a change to learn about the lower level APIs like EventSource, Websocket, Clusters for concurrency, ArrayBuffers, etc. That's why I decided to make this toast library to make my life easier when I develop client-side apps with Vanilla JavaScript. Besides, I will be able to freely explore Vanilla JS and understand how libraries like React work under the hood in a clear view.
 
 This library will be up to ARIA accessibility standards as much as possible. The few uses implemented already are:
 

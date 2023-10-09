@@ -19,13 +19,19 @@
 
             document.querySelector("[data-testid='toast-trigger']").addEventListener("click", async () => {
                 if (Math.random() < 0.5) {
-                    toast({ message: "Hello, World!" }, { position: {
-                    x: "bottom"
-                } });
+                    toast({ message: "Hello, World!" }, {
+                        position: {
+                            x: "bottom",
+                        },
+                        automatically_close: false,
+                    });
                 } else {
-                    toast({ message: "Hello, Worlfdfdsfsdfd!" }, { position: {
-                    x: "bottom"
-                } });
+                    toast({ message: "Hello, Worlfdfdsfsdfd!" }, {
+                        position: {
+                            x: "bottom",
+                        },
+                        automatically_close: false,
+                    });
                 }
             });
         })
