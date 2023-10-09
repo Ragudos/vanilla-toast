@@ -4,13 +4,7 @@
  */
 
 import "./styles/var.css";
-import {
-    ToastImportance,
-    ToastPositions,
-    ToastProps,
-    ToastTypes,
-    toast,
-} from ".";
+import { ToastImportance, ToastPositions, ToastProps, ToastTypes } from ".";
 import {
     $,
     $create,

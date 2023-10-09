@@ -12,19 +12,21 @@
     <button type="button" data-testid="mount-toast">Mount toast container</button>
     <button type="button" data-testid="toast-trigger">Show toast</button>
     <script type="module">
-        import { toast, initialize_toast } from "./index.js";
+        import { toast, mount_toaster } from "./index.js";
 
         window.addEventListener("DOMContentLoaded", () => {
-            document.querySelector("[data-testid='mount-toast']").addEventListener("click", () => {
-                initialize_toast();
-            });
+            mount_toaster();
 
             document.querySelector("[data-testid='toast-trigger']").addEventListener("click", async () => {
-
-                const response = await toast.promise(fetch, "https://jsonplaceholder.typicode.com/todos");
-                const data = await response.json();
-
-                console.log(data);
+                if (Math.random() < 0.5) {
+                    toast({ message: "Hello, World!" }, { position: {
+                    x: "bottom"
+                } });
+                } else {
+                    toast({ message: "Hello, Worlfdfdsfsdfd!" }, { position: {
+                    x: "bottom"
+                } });
+                }
             });
         })
     </script>
