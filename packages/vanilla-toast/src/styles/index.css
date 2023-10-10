@@ -91,13 +91,14 @@
     opacity: var(--toast-opacity, 0);
     transform: translateY(var(--toast-translate-y, 0)) scale(var(--toast-scale, 1));
 
-    pointer-events: all;
-    touch-action: auto;
-
     display: flex;
     align-items: center;
     justify-content: space-between;
     gap: 0.5rem;
+
+    
+    pointer-events: all;
+    touch-action: auto;
 
     font-synthesis: weight;
     font-size: var(--toast-font-size, 0.875rem);

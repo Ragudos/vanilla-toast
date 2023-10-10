@@ -118,16 +118,18 @@ export function listen_to_page_events() {
 
     function remove_timers() {
         for (const toast of ToastObserver.toasts.values()) {
-            const time_left =
-                toast.options.lifetime - (Date.now() - toast.created_on);
+            if (toast.automatically_close) {
+                const time_left =
+                    toast.options.lifetime - (Date.now() - toast.created_on);
 
-            // to avoid removing the timer of a toast that's animating out
-            if (time_left >= toast.options.animation_duration) {
-                ToastObserver.remove_timer(toast.id);
-                leftover_duration_of_toasts.push({
-                    toast_id: toast.id,
-                    time_left: time_left,
-                });
+                // to avoid removing the timer of a toast that's animating out
+                if (time_left >= toast.options.animation_duration) {
+                    ToastObserver.remove_timer(toast.id);
+                    leftover_duration_of_toasts.push({
+                        toast_id: toast.id,
+                        time_left: time_left,
+                    });
+                }
             }
         }
     }

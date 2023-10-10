@@ -49,7 +49,10 @@ export class Toast implements ToastInterface {
         this.props = props;
         options.position = get_default_position(options.position);
         this.options = options;
-        this.automatically_close = options.automatically_close ?? false;
+        this.automatically_close =
+            options.automatically_close == undefined
+                ? true
+                : options.automatically_close;
         this.is_dismissed = is_dismissed;
         this.type = type;
         this.idx = idx;
