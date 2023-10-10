@@ -22,3 +22,16 @@ export function calculate_toast_offset(
 ) {
     return Math.floor(idx * gap + total_height_of_previous_toasts);
 }
+
+export function get_height(el: HTMLElement) {
+    const original_height = el.style.height;
+
+    el.style.height = "auto";
+
+    const packed_size = el.getBoundingClientRect().height;
+
+    return {
+        original_height,
+        packed_size,
+    };
+}

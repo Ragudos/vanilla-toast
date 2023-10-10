@@ -11,6 +11,7 @@ import { $id } from "./lib/dom_helpers";
 import { ToastObserver } from "./store";
 import { create_element } from "./render";
 import { get_icon } from "./icons";
+import { get_height } from "./lib/calculate_height";
 
 export const GAP = 12;
 export const MAX_TOASTS_VISIBLE = 3;
@@ -62,11 +63,9 @@ export class Toast implements ToastInterface {
         if ($id("toast-container")) {
             this.append_to_dom();
 
-            const original_height = this.src_element.style.height;
-
-            this.src_element.style.height = "auto";
-
-            const packed_size = this.src_element.getBoundingClientRect().height;
+            const { packed_size, original_height } = get_height(
+                this.src_element,
+            );
 
             $id("toast-container").style.setProperty(
                 "--front-toast-height",
@@ -173,6 +172,10 @@ export class Toast implements ToastInterface {
         }
 
         if (this.idx == 0) {
+            $id("toast-container").style.setProperty(
+                "--front-toast-height",
+                this.initial_height + "px",
+            );
             $id("toast-" + this.id).setAttribute("data-front-toast", "true");
         }
 
