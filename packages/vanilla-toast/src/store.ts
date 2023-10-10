@@ -17,15 +17,15 @@ class Store implements StoreInterface {
     toasts: Map<string, Toast>;
     listeners: Map<number, ToastListener>;
     timers: Map<string, number>;
-    toasts_length: number;
     listeners_length: number;
+    aborters: Map<string, AbortController>;
 
     constructor() {
         this.listeners_length = 0;
-        this.toasts_length = 0;
         this.timers = new Map();
         this.toasts = new Map();
         this.listeners = new Map();
+        this.aborters = new Map();
     }
 
     listen = (listener: ToastListener): (() => void) => {
@@ -98,6 +98,14 @@ class Store implements StoreInterface {
 
             $id("toast-container").removeChild(toast_element);
             this.remove_timers(toast_id);
+
+            const aborter = this.aborters.get(`toast-${toast_id}`);
+
+            if (aborter) {
+                aborter.abort();
+            }
+
+            this.aborters.delete(`toast-${toast_id}`);
         }, toast.options.animation_duration);
 
         this.timers.set(`toast-animation-${toast_id}`, animation_timeout);

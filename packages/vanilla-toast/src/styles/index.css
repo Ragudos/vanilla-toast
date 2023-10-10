@@ -1,8 +1,38 @@
+@import "./colors.css";
+@import "./positions.css";
+@import "./button.css";
+
+#toast-section-heading {
+    width: 1px;
+    height: 1px;
+    position: absolute;
+
+    z-index: -1;
+    overflow: hidden;
+    clip: rect(1px, 1px, 1px, 1px);
+    clip-path: inset(50%);
+    white-space: nowrap;
+    border: 0;
+    padding: 0;
+    margin: -1px;
+    background: transparent;
+    color: transparent;
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    -webkit-tap-highlight-color: transparent;
+}
+
 [data-toast-section-container],
 [data-toast-section-container] * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
+
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
 }
 
 [data-toast-section-container] {
@@ -32,39 +62,45 @@
 
 [data-vanilla-toast] {
     --toast-transition-duration: 500ms;
-    --lift-amount: var(var(--lift) * var(--toast-gap));
+    --lift-amount: calc(var(--lift) * var(--toast-gap));
 
     position: absolute;
 
-    width: var(--toast-width, 10rem);
-    height: var(--toast-initial-height, auto);
+    width: var(--toast-width, 17.5rem);
 
     background-color: var(--toast-background, white);
     color: var(--toast-background, black);
 
     word-break: break-all;
     white-space: normal;
-    overflow-x: auto;
 
-    padding: var(--toast-vertical-padding, 0.5rem) var(--toast-horizontal-padding, 1rem);
+    padding: var(--toast-vertical-padding, 0.5rem) var(--toast-horizontal-padding, 0.75rem);
 
     border-radius: var(--toast-border-radius, 0.25rem);
 
     box-shadow: var(--toast-box-shadow-size, 0px 4px 12px) var(--toast-box-shadow-color, hsla(0, 0%, 0%, 0.5));
 
-    z-index: var(--toast-z-index);
+    z-index: var(--z-index);
 
-    transition-property: opacity, transform, height;
+    transition-property: opacity, transform;
     transition-duration: calc(var(--toast-transition-duration) * 2), var(--toast-transition-duration);
     transition-timing-function: var(--toast-transition-timing-function, linear);
 
-    will-change: opacity, transform, height;
+    will-change: opacity, transform, height, width;
 
     opacity: var(--toast-opacity, 0);
     transform: translateY(var(--toast-translate-y, 0)) scale(var(--toast-scale, 1));
 
     pointer-events: all;
     touch-action: auto;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.5rem;
+
+    font-synthesis: weight;
+    font-size: var(--toast-font-size, 0.875rem);
 }
 
 [data-vanilla-toast] {
@@ -72,45 +108,71 @@
     --toast-opacity: 0;
 }
 
+[data-vanilla-toast] p {
+    flex: 1;
+}
+
+[data-vanilla-toast][dir="ltr"] p {
+    text-align: left;
+}
+
+[data-vanilla-toast][dir="rtl"] p {
+    text-align: right;
+}
+
 [data-vanilla-toast][data-mounted="true"] {
     --toast-translate-y: calc(var(--lift) * var(--toast-offset));
     --toast-opacity: 1;
 }
 
-[data-vanilla-toast][data-dismissed="true"] {
-    --toast-translate-y: calc(var(--lift) * var(--toast-offset) + var(--lift) * -100%);
-    --toast-opacity: 0;
-}
-
-[data-toast-container][data-position-x="left"] [data-vanilla-toast],
-[data-toast-container][data-position-x="right"] [data-vanilla-toast][data-position-x="left"],
-[data-toast-container][data-position-x="center"] [data-vanilla-toast][data-position-x="left"] {
+[data-vanilla-toast]::before,
+[data-vanilla-toast]::after {
+    position: absolute;
+    content: "";
+    width: 100%;
+    height: 100%;
     left: 0;
 }
 
-[data-toast-container][data-position-x="center"] [data-vanilla-toast],
-[data-toast-container][data-position-x="right"] [data-vanilla-toast][data-position-x="center"],
-[data-toast-container][data-position-x="left"] [data-vanilla-toast][data-position-x="center"] {
-    left: 50%;
-    transform: translateX(-50%);
+[data-toast-container][data-expanded="true"] [data-vanilla-toast]::before {
+    bottom: 100%;
 }
 
-[data-toast-container][data-position-x="right"] [data-vanilla-toast],
-[data-toast-container][data-position-x="left"] [data-vanilla-toast][data-position-x="right"],
-[data-toast-container][data-position-x="center"] [data-vanilla-toast][data-position-x="right"] {
-    right: 0;
-}
-
-[data-toast-container][data-position-y="top"] [data-vanilla-toast],
-[data-toast-container][data-position-y="bottom"] [data-vanilla-toast][data-position-y="top"] {
-    --lift: 1;
+[data-toast-container][data-expanded="false"] [data-vanilla-toast]:not([data-front-toast="true"])::before {
+    border-radius: inherit;
+    background-color: inherit;
 
     top: 0;
+
+    pointer-events: none;
+    touch-action: none;
+
+    transition-duration: var(--toast-transition-duration, 500ms);
 }
 
-[data-toast-container][data-position-y="bottom"] [data-vanilla-toast],
-[data-toast-container][data-position-y="top"] [data-vanilla-toast][data-position-y="bottom"] {
-    --lift: -1;
+[data-toast-container][data-expanded="false"] [data-vanilla-toast][data-mounted="true"] {
+    --toast-translate-y: calc(var(--toast-index) * var(--lift-amount));
+    --toast-scale: calc(1 - var(--toast-index) * 0.05);
+}
 
-    bottom: 0;
+[data-toast-container][data-expanded="true"] [data-vanilla-toast][data-dismissed="true"],
+[data-toast-container][data-expanded="false"] [data-vanilla-toast][data-dismissed="true"] {
+    --toast-opacity: 0 !important;
+    transition-duration: calc(var(--toast-transition-duration) / 2), var(--toast-transition-duration);
+}
+/* [data-toast-container][data-expanded="true"] [data-vanilla-toast][data-mounted="true"][data-front-toast="false"] {
+    height: var(--toast-initial-height, auto);
+} */
+
+[data-toast-container][data-expanded="true"] [data-vanilla-toast][data-dismissed="true"] {
+    --toast-translate-y: calc(var(--lift) * var(--toast-offset) + var(--lift) * -100%);
+}
+
+[data-toast-container][data-expanded="false"] [data-vanilla-toast][data-dismissed="true"] {
+    --toast-translate-y: calc(var(--lift) * -40%);
+}
+
+[data-vanilla-toast] [data-icon-container] {
+    width: 1rem;
+    height: 1rem;
 }

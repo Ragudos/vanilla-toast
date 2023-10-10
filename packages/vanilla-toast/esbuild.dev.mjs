@@ -5,6 +5,7 @@ const ctx = await esBuild.context({
     entryPoints: ["./src/index.html", "./src/index.ts"],
     loader: {
         ".html": "copy",
+        ".svg": "file",
     },
     bundle: true,
     outdir: "dev",

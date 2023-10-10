@@ -11,12 +11,33 @@ const DEFAULT_OPTIONS: ToastOptions = {
     // if there is. If not, we set the default value instead.
     position: undefined,
     lifetime: 5000,
-    animation_duration: 250,
+    animation_duration: 300,
     importance: "important",
     automatically_close: true,
+    close_button: {
+        is_shown_on_hover: true,
+        position: "right",
+    },
+    dir: get_dir(),
+    theme: "system",
+    style: "glass",
 };
 
 const media_query = window.matchMedia("(prefers-reduced-motion)");
+
+function get_dir(): "ltr" | "rtl" {
+    const attr = document.documentElement.getAttribute("dir");
+
+    if (attr == "ltr" || attr == "rtl") {
+        return attr;
+    }
+
+    return attr == "auto" || !attr
+        ? (window.getComputedStyle(document.documentElement).direction as
+              | "rtl"
+              | "ltr")
+        : (attr as "rtl" | "ltr");
+}
 
 export function get_default(options?: ToastOptions): ToastOptions {
     if (!options) {
@@ -65,6 +86,46 @@ export function get_default(options?: ToastOptions): ToastOptions {
 
         if (options.automatically_close == undefined) {
             options.automatically_close = true;
+        }
+
+        if (!options.close_button) {
+            options.close_button = DEFAULT_OPTIONS.close_button;
+        } else {
+            if (options.close_button.is_shown_on_hover == undefined) {
+                options.close_button.is_shown_on_hover =
+                    DEFAULT_OPTIONS.close_button.is_shown_on_hover;
+            } else if (options.close_button.position == undefined) {
+                options.close_button.position =
+                    DEFAULT_OPTIONS.close_button.position;
+            } else if (
+                options.close_button.position != "left" &&
+                options.close_button.position != "right"
+            ) {
+                options.close_button.position = "right";
+            }
+        }
+
+        if (
+            !options.theme ||
+            (options.theme != "dark" &&
+                options.theme != "light" &&
+                options.theme != "system")
+        ) {
+            options.theme = DEFAULT_OPTIONS.theme;
+        }
+
+        if (!options.dir || (options.dir != "ltr" && options.dir != "rtl")) {
+            options.dir = DEFAULT_OPTIONS.dir;
+        }
+
+        if (
+            !options.style ||
+            (options.style != "glass" &&
+                options.style != "icons" &&
+                options.style != "monochrome" &&
+                options.style != "plain")
+        ) {
+            options.style = DEFAULT_OPTIONS.style;
         }
 
         return options;

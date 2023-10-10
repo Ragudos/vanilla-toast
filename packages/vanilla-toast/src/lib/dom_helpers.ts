@@ -10,9 +10,9 @@ export const $id = document.getElementById.bind(
 export const $create = document.createElement.bind(
     document,
 ) as typeof document.createElement;
-export const $create_ns = document.createAttributeNS.bind(
+export const $create_ns = document.createElementNS.bind(
     document,
-) as typeof document.createAttributeNS;
+) as typeof document.createElementNS;
 export const $create_attr = document.createAttribute.bind(
     document,
 ) as typeof document.createAttribute;

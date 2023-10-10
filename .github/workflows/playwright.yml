@@ -18,9 +18,9 @@ jobs:
     - name: Install dependencies
       run: pnpm install --no-frozen-lockfile
     - name: Install Playwright Browsers
-      run: npm run -w @vanilla-toast/test browser:install
+      run: npm run browser:install
     - name: Run Playwright tests
-      run: npm run -w @vanilla-toast/test start
+      run: npm run test
     - uses: actions/upload-artifact@v3
       if: always()
       with:

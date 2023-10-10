@@ -1,6 +1,7 @@
 import type { ToastContainerOptions, ToastOptions } from "./types/toast-types";
-import { $create, $create_attr, $id } from "./lib/dom_helpers";
+import { $id } from "./lib/dom_helpers";
 import { DEFAULT_POSITION } from "./lib/get_default";
+import { create_element } from "./render";
 
 export function mount_toaster(
     options?: Pick<ToastOptions, "position"> & ToastContainerOptions,
@@ -11,34 +12,28 @@ export function mount_toaster(
         return;
     }
 
-    const toast_section_container = $create("section");
-    const toast_container = $create("ol");
-    const aria_label = $create_attr("aria-label");
-    const data_section_toast_container = $create_attr(
-        "data-toast-section-container",
-    );
-    const data_position_x_attr = $create_attr("data-position-x");
-    const data_position_y_attr = $create_attr("data-position-y");
-    const data_toast_container = $create_attr("data-toast-container");
-    const data_expanded = $create_attr("data-expanded");
-    const data_position_x = options?.position?.x || DEFAULT_POSITION.x;
-    const data_position_y = options?.position?.y || DEFAULT_POSITION.y;
+    const section = create_element("section", {
+        "aria-label": "Notifcations (Alt + T). Escape to unexpand.",
+        "data-toast-section-container": "true",
+        id: "toast-section-container",
+    });
+    const toast_container = create_element("ol", {
+        "data-expanded":
+            options?.is_expanded_by_default != undefined
+                ? options.is_expanded_by_default + ""
+                : "false",
+        "data-position-x": options?.position?.x || DEFAULT_POSITION.x,
+        "data-position-y": options?.position?.y || DEFAULT_POSITION.y,
+        "data-toast-container": "true",
+        id: "toast-container",
+        "aria-describedby": "toast-section-heading",
+    });
+    const label = create_element("h6", {
+        id: "toast-section-heading",
+        textContent: "A section of notifications",
+    });
 
-    aria_label.value = "Notifications (Alt + T)";
-    data_position_x_attr.value = data_position_x;
-    data_position_y_attr.value = data_position_y;
-    data_expanded.value = `${options?.is_expanded_by_default || false}`;
-
-    toast_section_container.setAttributeNode(aria_label);
-    toast_section_container.setAttributeNode(data_section_toast_container);
-    toast_section_container.id = "toast-section-container";
-
-    toast_container.setAttributeNode(data_position_x_attr);
-    toast_container.setAttributeNode(data_position_y_attr);
-    toast_container.setAttributeNode(data_toast_container);
-    toast_container.setAttributeNode(data_expanded);
-    toast_container.id = "toast-container";
-
-    toast_section_container.append(toast_container);
-    document.body.append(toast_section_container);
+    section.append(label);
+    section.append(toast_container);
+    document.body.append(section);
 }

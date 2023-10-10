@@ -1,6 +1,6 @@
 {
   "name": "vanilla-toast",
-  "version": "0.3.1",
+  "version": "0.4.2",
   "description": "A dependency-free toast notification library for vanilla users of JavaScript!",
   "type": "module",
   "engines": {
@@ -12,7 +12,8 @@
   "scripts": {
     "build": "npm run -w @webdevaaron/vanilla-toast build",
     "dev": "npm run -w @webdevaaron/vanilla-toast dev",
-    "test": "npm run -w @vanilla-toast/test start",
+    "browser:install": "pnpm exec playwright install --with-deps",
+    "test": "pnpm exec playwright test && pnpm exec playwright show-report",
     "lint": "eslint ./",
     "lint:fix": "eslint ./ --fix",
     "type-check": "tsc --noEmit",
@@ -20,8 +21,7 @@
     "prepare": "husky install"
   },
   "workspaces": [
-    "./packages/vanilla-toast",
-    "./packages/test"
+    "./packages/vanilla-toast"
   ],
   "keywords": [
     "vanilla-toast",
@@ -39,7 +39,6 @@
   "author": "Aaron",
   "license": "MIT",
   "devDependencies": {
-    "@vanilla-toast/vanilla-toast": "file:./packages/vanilla-toast",
     "@vanilla-toast/eslint-config": "file:./packages/eslint-config",
     "@vanilla-toast/prettier-config": "file:./packages/prettier-config",
     "@typescript-eslint/eslint-plugin": "^6.7.3",
@@ -50,6 +49,7 @@
     "eslint-plugin-promise": "^6.1.1",
     "husky": "^8.0.0",
     "prettier": "^3.0.3",
-    "typescript": "^5.2.2"
+    "typescript": "^5.2.2",
+    "@playwright/test": "^1.38.1"
   }
 }

@@ -5,12 +5,15 @@ import type {
     ToastTypes,
 } from "./types/toast-types";
 
-import { TOAST_ATTRIBUTES, attributes_map } from "./lib/attributes";
+import { TOAST_ATTRIBUTES, aria_live_map } from "./lib/attributes";
 import { get_default_position } from "./lib/get_default";
-import { $create, $id } from "./lib/dom_helpers";
+import { $id } from "./lib/dom_helpers";
 import { ToastObserver } from "./store";
+import { create_element } from "./render";
+import { get_icon } from "./icons";
 
-export const GAP = 20;
+export const GAP = 12;
+export const MAX_TOASTS_VISIBLE = 3;
 
 export class Toast implements ToastInterface {
     id: string;
@@ -60,73 +63,89 @@ export class Toast implements ToastInterface {
 
             const packed_size = this.src_element.getBoundingClientRect().height;
 
+            $id("toast-container").style.setProperty(
+                "--front-toast-height",
+                packed_size + "px",
+            );
             this.initial_height = packed_size;
             this.src_element.style.height = original_height;
             this.offset = 0;
         }
     }
 
-    append_to_dom(): void {
-        const el = $create("li");
+    private append_to_dom = (): void => {
+        const element = create_element("li", {
+            dir: this.options.dir.toString(),
+            "data-front-toast": true,
+            "data-vanilla-toast": true,
+            "data-position-x": this.options.position.x,
+            "data-position-y": this.options.position.y,
+            "data-dismissed": "false",
+            id: `toast-${this.id}`,
+            "aria-live": aria_live_map[this.options.importance],
+            "aria-atomic": true,
+            style: {
+                "--toast-index": this.idx + "",
+                "--z-index": this.z_index + "",
+                "--toast-transition-duration":
+                    this.options.animation_duration + "ms",
+                "--toast-gap": GAP + "px",
+                "--toast-offset": "0px",
+            },
+        });
+        const button_container = create_element("div", {
+            "data-close-button-container": "true",
+            "data-position": this.options.close_button.position,
+            "data-show-on-hover":
+                this.options.close_button.is_shown_on_hover + "",
+        });
+        const close_button = create_element("button", {
+            type: "button",
+            "data-close-button": "true",
+            "aria-controls": `toast-${this.id}`,
+            "aria-pressed": "false",
+            "aria-label": "Close Notification Toast",
+        });
+        const message_container = create_element("p", {
+            textContent: this.props.message,
+        });
+        const aborter = new AbortController();
+        const signal = aborter.signal;
 
-        this.src_element = el;
+        ToastObserver.aborters.set(`toast-${this.id}`, aborter);
 
-        for (const attr_key in this.options) {
-            if (attr_key == "automatically_close") {
-                continue;
-            }
+        this.src_element = element;
 
-            if (attr_key == "position") {
-                this.src_element.setAttribute(
-                    attributes_map.position.x,
-                    this.options.position.x,
-                );
-                this.src_element.setAttribute(
-                    attributes_map.position.y,
-                    this.options.position.y,
-                );
+        close_button.addEventListener(
+            "click",
+            () => {
+                ToastObserver.dismiss(this.id);
+            },
+            {
+                once: true,
+                signal: signal,
+            },
+        );
 
-                continue;
-            }
+        if (this.type != "neutral") {
+            const icon = get_icon(this.type);
+            const icon_container = create_element("div", {
+                "data-icon-container": "true",
+            });
 
-            this.src_element.setAttribute(
-                attributes_map[attr_key],
-                this.options[attr_key],
-            );
+            icon_container.appendChild(icon);
+            this.src_element.append(icon_container);
         }
 
-        this.src_element.setAttribute(
-            TOAST_ATTRIBUTES.DATA_DISMISSED,
-            this.is_dismissed + "",
-        );
-        this.src_element.setAttribute(TOAST_ATTRIBUTES.DATA_VANILLA_TOAST, "");
-        this.src_element.style.setProperty("--toast-gap", GAP + "");
-        this.src_element.style.setProperty("--toast-offset", "0px");
-        this.src_element.style.setProperty(
-            "--toast-transition-duration",
-            this.options.animation_duration + "ms",
-        );
-
-        this.update_idx();
-
-        this.src_element.id = `toast-${this.id}`;
-        this.src_element.textContent = this.props.message;
-
-        const btn = $create("button");
-
-        btn.addEventListener("click", () => {
-            ToastObserver.dismiss(this.id);
-        });
-
-        btn.textContent = "close";
-        this.src_element.append(btn);
-
+        button_container.appendChild(close_button);
+        this.src_element.append(message_container);
+        this.src_element.append(button_container);
         $id("toast-container").append(this.src_element);
 
         setTimeout(() => {
             this.src_element.setAttribute("data-mounted", "true");
         });
-    }
+    };
 
     update_offset = (): void => {
         this.src_element.style.setProperty(
@@ -143,6 +162,16 @@ export class Toast implements ToastInterface {
     };
 
     update_idx = (): void => {
+        if (this.idx >= MAX_TOASTS_VISIBLE) {
+            this.src_element.style.setProperty("--toast-opacity", "0");
+        } else if (!this.is_dismissed) {
+            this.src_element.style.setProperty("--toast-opacity", "1");
+        }
+
+        if (this.idx == 0) {
+            $id("toast-" + this.id).setAttribute("data-front-toast", "true");
+        }
+
         this.src_element.style.setProperty("--toast-index", this.idx + "");
         this.src_element.style.setProperty(
             "--toast-z-index",

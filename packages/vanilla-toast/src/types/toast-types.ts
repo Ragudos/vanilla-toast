@@ -27,12 +27,46 @@ export type ToastProps = {
     title?: string;
 };
 
+/** Customization for the close button.
+ *  You can change its position.
+ */
+export type CloseButtonOptions = {
+    /** @default true */
+    is_shown_on_hover?: boolean;
+    /** @default right */
+    position: "left" | "right";
+};
+
 export type ToastOptions = {
+    dir?: "ltr" | "rtl";
     position?: ToastPosition;
     importance?: keyof typeof aria_live_map;
     lifetime?: number;
     animation_duration?: number;
     automatically_close?: boolean;
+    close_button?: CloseButtonOptions;
+    /** For theme toggling
+     *  @default
+     *
+     *  system
+     */
+    theme?: "light" | "dark" | "system";
+
+    /** Types of style you'd want your toast to have.
+     *
+     *  `glass` - a glass like appearance
+     *
+     *  `plain` - a plain background with semantics (i.e. green for success)
+     *
+     *  `icons` - only color the icons if it's semantic
+     *
+     *  `monochrome` - no semantic background at all, just black & white
+     *
+     *  @default
+     *
+     *  glass
+     */
+    style?: "glass" | "plain" | "icons" | "monochrome";
 };
 
 export type ToastListener = (
@@ -65,8 +99,11 @@ export interface StoreInterface {
      *  automatically closing a toast.
      */
     timers: Map<string, number>;
-    toasts_length: number;
     listeners_length: number;
+    /** A map of aborters to remove
+     *  event listeners on a toast
+     */
+    aborters: Map<string, AbortController>;
 
     /** Adds a function which receives information about a toast to the store, and this store will
      *  call that function when an update to its toasts' state occurs.
