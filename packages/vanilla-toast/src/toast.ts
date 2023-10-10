@@ -5,7 +5,7 @@ import type {
     ToastTypes,
 } from "./types/toast-types";
 
-import { TOAST_ATTRIBUTES, aria_live_map } from "./lib/attributes";
+import { aria_live_map } from "./lib/attributes";
 import { get_default_position } from "./lib/get_default";
 import { $id } from "./lib/dom_helpers";
 import { ToastObserver } from "./store";
@@ -26,6 +26,7 @@ export class Toast implements ToastInterface {
     initial_height: number;
     offset: number;
     automatically_close: boolean;
+    created_on: number;
 
     private src_element: null | HTMLElement;
 
@@ -53,6 +54,7 @@ export class Toast implements ToastInterface {
         this.type = type;
         this.idx = idx;
         this.z_index = z_index;
+        this.created_on = Date.now();
 
         if ($id("toast-container")) {
             this.append_to_dom();
@@ -155,17 +157,16 @@ export class Toast implements ToastInterface {
     };
 
     animate_out = (): void => {
-        this.src_element.setAttribute(
-            TOAST_ATTRIBUTES.DATA_DISMISSED,
-            this.is_dismissed + "",
-        );
+        this.src_element.setAttribute("data-dismissed", this.is_dismissed + "");
     };
 
     update_idx = (): void => {
         if (this.idx >= MAX_TOASTS_VISIBLE) {
             this.src_element.style.setProperty("--toast-opacity", "0");
+            this.src_element.setAttribute("aria-hidden", "true");
         } else if (!this.is_dismissed) {
             this.src_element.style.setProperty("--toast-opacity", "1");
+            this.src_element.setAttribute("aria-hidden", "false");
         }
 
         if (this.idx == 0) {

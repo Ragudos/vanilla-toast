@@ -94,18 +94,7 @@ class Store implements StoreInterface {
         toast.is_dismissed = true;
 
         const animation_timeout = setTimeout(() => {
-            const toast_element = $id(`toast-${toast_id}`);
-
-            $id("toast-container").removeChild(toast_element);
-            this.remove_timers(toast_id);
-
-            const aborter = this.aborters.get(`toast-${toast_id}`);
-
-            if (aborter) {
-                aborter.abort();
-            }
-
-            this.aborters.delete(`toast-${toast_id}`);
+            this.$remove_toast(toast_id);
         }, toast.options.animation_duration);
 
         this.timers.set(`toast-animation-${toast_id}`, animation_timeout);
@@ -115,7 +104,15 @@ class Store implements StoreInterface {
         this.update(toast, "animate-out");
     };
 
-    remove_timers = (toast_id: string): void => {
+    add_timer = (toast_id: string, remaining_time: number): void => {
+        const timer = setTimeout(() => {
+            this.dismiss(toast_id);
+        }, remaining_time);
+
+        this.timers.set(`toast-${toast_id}`, timer);
+    };
+
+    remove_timer = (toast_id: string): void => {
         const timer_id = `toast-${toast_id}`;
         const animation_timer_id = `toast-animation-${toast_id}`;
         const timer = this.timers.get(timer_id);
@@ -126,6 +123,21 @@ class Store implements StoreInterface {
 
         this.timers.delete(timer_id);
         this.timers.delete(animation_timer_id);
+    };
+
+    private $remove_toast = (toast_id: string): void => {
+        const toast_element = $id(`toast-${toast_id}`);
+
+        $id("toast-container").removeChild(toast_element);
+        this.remove_timer(toast_id);
+
+        const aborter = this.aborters.get(`toast-${toast_id}`);
+
+        if (aborter) {
+            aborter.abort();
+        }
+
+        this.aborters.delete(`toast-${toast_id}`);
     };
 }
 

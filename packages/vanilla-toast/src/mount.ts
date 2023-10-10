@@ -2,6 +2,7 @@ import type { ToastContainerOptions, ToastOptions } from "./types/toast-types";
 import { $id } from "./lib/dom_helpers";
 import { DEFAULT_POSITION } from "./lib/get_default";
 import { create_element } from "./render";
+import { listen_to_page_events } from "./listener";
 
 export function mount_toaster(
     options?: Pick<ToastOptions, "position"> & ToastContainerOptions,
@@ -36,4 +37,6 @@ export function mount_toaster(
     section.append(label);
     section.append(toast_container);
     document.body.append(section);
+
+    listen_to_page_events();
 }

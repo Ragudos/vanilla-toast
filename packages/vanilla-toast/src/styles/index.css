@@ -82,7 +82,7 @@
 
     z-index: var(--z-index);
 
-    transition-property: opacity, transform;
+    transition-property: opacity, transform, height;
     transition-duration: calc(var(--toast-transition-duration) * 2), var(--toast-transition-duration);
     transition-timing-function: var(--toast-transition-timing-function, linear);
 
@@ -160,9 +160,15 @@
     --toast-opacity: 0 !important;
     transition-duration: calc(var(--toast-transition-duration) / 2), var(--toast-transition-duration);
 }
-/* [data-toast-container][data-expanded="true"] [data-vanilla-toast][data-mounted="true"][data-front-toast="false"] {
+
+[data-toast-container][data-expanded="false"] [data-vanilla-toast][data-mounted="true"][data-front-toast="false"] {
+    height: var(--front-toast-height, auto);
+    overflow: hidden;
+}
+
+[data-toast-container][data-expanded="true"] [data-vanilla-toast][data-mounted="true"][data-front-toast="false"] {
     height: var(--toast-initial-height, auto);
-} */
+}
 
 [data-toast-container][data-expanded="true"] [data-vanilla-toast][data-dismissed="true"] {
     --toast-translate-y: calc(var(--lift) * var(--toast-offset) + var(--lift) * -100%);
