@@ -1,12 +1,10 @@
-import type { ToastContainerOptions, ToastOptions } from "./types/toast-types";
+import type { ToastContainerOptions } from "./types/toast-types";
 import { $id } from "./lib/dom_helpers";
 import { DEFAULT_POSITION } from "./lib/get_default";
 import { create_element } from "./render";
 import { listen_to_page_events } from "./listener";
 
-export function mount_toaster(
-    options?: Pick<ToastOptions, "position"> & ToastContainerOptions,
-) {
+export function mount_toaster(options?: ToastContainerOptions) {
     const existing_toast_container = $id("toast-section-container");
 
     if (existing_toast_container) {
@@ -38,5 +36,7 @@ export function mount_toaster(
     section.append(toast_container);
     document.body.append(section);
 
-    listen_to_page_events();
+    if (!options?.is_expanded_by_default) {
+        listen_to_page_events();
+    }
 }

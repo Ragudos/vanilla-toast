@@ -19,28 +19,20 @@
 
             document.querySelector("[data-testid='toast-trigger']").addEventListener("click", async () => {
                 if (Math.random() < 0.5) {
-                    toast.info({ message: "Hello, World!" }, {
-                        position: {
-                            
-                            x: "center",
-                            y: "bottom"
-                        },
+                    toast.loading({ message: "Hello, World!" }, {
                         automatically_close: false,
                         close_button: {
                             is_shown_on_hover: true,
-                        }
+                        },
+                        loading_icon: "broken-straight",
                     });
                 } else {
-                    toast.info({ message: "Hello, Worlfdfdsfsddddddddddddddddddddddddddddddddddddddddddddddddddddddddddfd!" }, {
-                        position: {
-                            
-                            x: "center",
-                            y: "bottom"
-                        },
+                    toast.loading({ message: "Hello, Worlfdfdsfsddddddddddddddddddddddddddddddddddddddddddddddddddddddddddfd!" }, {
                         automatically_close: false,
                         close_button: {
                             is_shown_on_hover: true,
-                        }
+                        },
+                        loading_icon: "broken-straight",
                     });
         }
             });

@@ -1,34 +1,26 @@
-[data-toast-container][data-position-x="left"] [data-vanilla-toast],
-[data-toast-container][data-position-x="right"] [data-vanilla-toast][data-position-x="left"],
-[data-toast-container][data-position-x="center"] [data-vanilla-toast][data-position-x="left"] {
+[data-toast-container][data-position-x="left"] [data-vanilla-toast] {
     left: 0;
 }
 
-[data-toast-container][data-position-x="center"] [data-vanilla-toast],
-[data-toast-container][data-position-x="right"] [data-vanilla-toast][data-position-x="center"],
-[data-toast-container][data-position-x="left"] [data-vanilla-toast][data-position-x="center"] {
+[data-toast-container][data-position-x="center"] [data-vanilla-toast] {
     left: 0;
     right: 0;
     margin-left: auto;
     margin-right: auto;
 }
 
-[data-toast-container][data-position-x="right"] [data-vanilla-toast],
-[data-toast-container][data-position-x="left"] [data-vanilla-toast][data-position-x="right"],
-[data-toast-container][data-position-x="center"] [data-vanilla-toast][data-position-x="right"] {
+[data-toast-container][data-position-x="right"] [data-vanilla-toast] {
     right: 0;
 }
 
-[data-toast-container][data-position-y="top"] [data-vanilla-toast],
-[data-toast-container][data-position-y="bottom"] [data-vanilla-toast][data-position-y="top"] {
+[data-toast-container][data-position-y="top"] [data-vanilla-toast] {
     --lift: 1;
 
     top: 0;
     bottom: auto;
 }
 
-[data-toast-container][data-position-y="bottom"] [data-vanilla-toast],
-[data-toast-container][data-position-y="top"] [data-vanilla-toast][data-position-y="bottom"] {
+[data-toast-container][data-position-y="bottom"] [data-vanilla-toast] {
     --lift: -1;
 
     bottom: 0;

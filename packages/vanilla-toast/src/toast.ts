@@ -6,7 +6,6 @@ import type {
 } from "./types/toast-types";
 
 import { aria_live_map } from "./lib/attributes";
-import { get_default_position } from "./lib/get_default";
 import { $id } from "./lib/dom_helpers";
 import { ToastObserver } from "./store";
 import { create_element } from "./render";
@@ -48,7 +47,6 @@ export class Toast implements ToastInterface {
 
         this.id = id;
         this.props = props;
-        options.position = get_default_position(options.position);
         this.options = options;
         this.automatically_close =
             options.automatically_close == undefined
@@ -89,9 +87,8 @@ export class Toast implements ToastInterface {
             dir: this.options.dir.toString(),
             "data-front-toast": true,
             "data-vanilla-toast": true,
-            "data-position-x": this.options.position.x,
-            "data-position-y": this.options.position.y,
             "data-dismissed": "false",
+            "data-type": this.type,
             id: `toast-${this.id}`,
             "aria-live": aria_live_map[this.options.importance],
             "aria-atomic": true,
@@ -112,6 +109,7 @@ export class Toast implements ToastInterface {
         });
         const close_button = create_element("button", {
             type: "button",
+            id: `close-toast-${this.id}`,
             "data-close-button": "true",
             "aria-controls": `toast-${this.id}`,
             "aria-pressed": "false",
@@ -130,6 +128,10 @@ export class Toast implements ToastInterface {
         close_button.addEventListener(
             "click",
             () => {
+                $id(`close-toast-${this.id}`).setAttribute(
+                    "aria-pressed",
+                    "true",
+                );
                 ToastObserver.dismiss(this.id);
             },
             {
@@ -139,7 +141,7 @@ export class Toast implements ToastInterface {
         );
 
         if (this.type != "neutral") {
-            const icon = get_icon(this.type);
+            const icon = get_icon(this.type, this.options.loading_icon);
             const icon_container = create_element("div", {
                 "data-icon-container": "true",
             });

@@ -5,7 +5,7 @@
 - [x] Stackable toasts
 - [x] Make stackable toasts look good. Handle proper transitions when changing heights.
 - [] Optimizations
-- [] Concise type definitions
+- [x] Concise type definitions
 - [] Expansive promise mechanism \(like having progress of upload or download, etc.\)
 - [x] Pause timers on expanding toasts when stackable toasts are implemented.
 - [] Add option to show the amount of time left before a toast is closed.

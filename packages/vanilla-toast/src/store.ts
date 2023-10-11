@@ -54,7 +54,7 @@ class Store implements StoreInterface {
     ): ReturnValue => {
         const toast_id = gen_random_id();
 
-        options = get_default(options);
+        options = get_default(type, options);
 
         const toast_size = this.toasts.size;
         const toast_data = new Toast(

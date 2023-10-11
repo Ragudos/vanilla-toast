@@ -1,9 +1,11 @@
-import type { ToastTypes } from "./types/toast-types";
-import { create_svg } from "./render";
+import type { LoadingIconTypes, ToastTypes } from "./types/toast-types";
+import { create_element, create_svg } from "./render";
 
-import broken_straight_spinner from "./assets/straight-broken-spinner.svg";
-import broken_rounded_spinner from "./assets/rounded-broken-spinner.svg";
-import eclipse_spinner from "./assets/eclipse-spinner.svg";
+import { rolling_spinner } from "./assets/rolling-spinner";
+import { flat_broken_spinner } from "./assets/flat-broken-spinner";
+import { rounded_broken_spinner } from "./assets/rounded-broken-spinner";
+import { straight_broken_spinner } from "./assets/straight-broken-spinner";
+import { eclipse_spinner } from "./assets/eclipse_spinner";
 
 const DEFAULT_SVG_PROPERTIES = {
     xmlns: "http://www.w3.org/2000/svg",
@@ -56,36 +58,45 @@ export function close_icon() {
 /** We use an image for loading icon for now
  *  since we have not implemented stuff for other svg tags yet.
  */
-export function loading_icon(
-    type: "eclipse" | "broken-straight" | "broken-rounded" = "eclipse",
-) {
-    const image = new Image();
-
-    image.width = 16;
-    image.height = 16;
-    image.alt = "Loading icon";
-    image.loading = "eager";
+export function loading_icon(type: LoadingIconTypes = "normal") {
+    const div = create_element("div", {
+        style: {
+            width: "100%",
+            height: "100%",
+        },
+    });
 
     switch (type) {
+        case "normal":
+            div.innerHTML = rolling_spinner;
+            break;
+
+        case "broken-flat":
+            div.innerHTML = flat_broken_spinner;
+            break;
+
         case "broken-rounded":
-            image.src = broken_rounded_spinner;
+            div.innerHTML = rounded_broken_spinner;
             break;
 
         case "broken-straight":
-            image.src = broken_straight_spinner;
+            div.innerHTML = straight_broken_spinner;
             break;
 
         case "eclipse":
-            image.src = eclipse_spinner;
+            div.innerHTML = eclipse_spinner;
             break;
+
+        default:
+            div.innerHTML = rolling_spinner;
     }
 
-    return image;
+    return div;
 }
 
 export function get_icon(
     type: Omit<ToastTypes, "neutral">,
-    loader_type?: "eclipse" | "broken-straight" | "broken-rounded",
+    loader_type?: LoadingIconTypes,
 ) {
     switch (type) {
         case "error":

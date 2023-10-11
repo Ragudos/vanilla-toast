@@ -1,6 +1,6 @@
 {
   "name": "vanilla-toast",
-  "version": "0.5.5",
+  "version": "0.6.5",
   "description": "A dependency-free toast notification library for vanilla users of JavaScript!",
   "type": "module",
   "engines": {
