@@ -1,5 +1,5 @@
 {
-  "name": "vanilla-toast",
+  "name": "@webdevaaron/vanilla-toast",
   "version": "0.7.0",
   "description": "A dependency-free toast notification library for vanilla users of JavaScript!",
   "type": "module",
@@ -10,8 +10,8 @@
     "@webdevaaron:registry": "https://npm.pkg.github.com"
   },
   "scripts": {
-    "build": "npm run -w @webdevaaron/vanilla-toast build",
-    "dev": "npm run -w @webdevaaron/vanilla-toast dev",
+    "build": "npm run -w @vanilla-toast/vanilla-toast build",
+    "dev": "npm run -w @vanilla-toast/vanilla-toast dev",
     "browser:install": "pnpm exec playwright install --with-deps",
     "test": "pnpm exec playwright test && pnpm exec playwright show-report",
     "lint": "eslint ./",

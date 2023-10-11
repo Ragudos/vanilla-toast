@@ -23,9 +23,6 @@ importers:
       '@vanilla-toast/prettier-config':
         specifier: file:./packages/prettier-config
         version: file:packages/prettier-config(eslint-config-prettier@9.0.0)(eslint-plugin-prettier@5.0.0)(prettier@3.0.3)
-      '@vanilla-toast/vanilla-toast':
-        specifier: file:./packages/vanilla-toast
-        version: file:packages/vanilla-toast
       eslint:
         specifier: ^8.50.0
         version: 8.50.0
@@ -1563,9 +1560,4 @@ packages:
       eslint-config-prettier: 9.0.0(eslint@8.50.0)
       eslint-plugin-prettier: 5.0.0(eslint-config-prettier@9.0.0)(eslint@8.50.0)(prettier@3.0.3)
       prettier: 3.0.3
-    dev: true
-
-  file:packages/vanilla-toast:
-    resolution: {directory: packages/vanilla-toast, type: directory}
-    name: '@webdevaaron/vanilla-toast'
     dev: true
