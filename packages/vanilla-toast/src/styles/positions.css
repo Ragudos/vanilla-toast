@@ -7,8 +7,10 @@
 [data-toast-container][data-position-x="center"] [data-vanilla-toast],
 [data-toast-container][data-position-x="right"] [data-vanilla-toast][data-position-x="center"],
 [data-toast-container][data-position-x="left"] [data-vanilla-toast][data-position-x="center"] {
-    left: 50%;
-    transform: translateX(-50%);
+    left: 0;
+    right: 0;
+    margin-left: auto;
+    margin-right: auto;
 }
 
 [data-toast-container][data-position-x="right"] [data-vanilla-toast],
@@ -22,6 +24,7 @@
     --lift: 1;
 
     top: 0;
+    bottom: auto;
 }
 
 [data-toast-container][data-position-y="bottom"] [data-vanilla-toast],
@@ -29,4 +32,5 @@
     --lift: -1;
 
     bottom: 0;
+    top: auto;
 }

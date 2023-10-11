@@ -135,8 +135,6 @@ export function listen_to_page_events() {
     }
 
     function enqueue(fn: () => void) {
-        console.log(leftover_duration_of_toasts);
-
         queue.push(fn);
         process_queue();
     }

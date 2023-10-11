@@ -59,9 +59,10 @@
     --toast-transition-duration: 500ms;
     --lift-amount: calc(var(--lift) * var(--toast-gap));
 
-    position: absolute;
+    position: fixed;
 
     width: var(--toast-width, 17.5rem);
+    height: var(--toast-initial-height, auto);
 
     background-color: var(--toast-background, white);
     color: var(--toast-background, black);
@@ -78,13 +79,13 @@
     z-index: var(--z-index);
 
     transition-property: opacity, transform, height;
-    transition-duration: calc(var(--toast-transition-duration) * 2), var(--toast-transition-duration);
+    transition-duration: calc(var(--toast-transition-duration) * 2), var(--toast-transition-duration), 0ms;
     transition-timing-function: var(--toast-transition-timing-function, linear);
 
-    will-change: opacity, transform, height, width;
+    will-change: opacity, transform, height;
 
     opacity: var(--toast-opacity, 0);
-    transform: translateY(var(--toast-translate-y, 0)) scale(var(--toast-scale, 1));
+    transform:  translateY(var(--toast-translate-y, 0)) scale(var(--toast-scale, 1));
 
     display: flex;
     align-items: center;
@@ -121,28 +122,31 @@
     --toast-opacity: 1;
 }
 
-[data-vanilla-toast]::before,
-[data-vanilla-toast]::after {
+[data-vanilla-toast]::before {
     position: absolute;
     content: "";
     width: 100%;
-    height: 100%;
     left: 0;
 }
 
+
 [data-toast-container][data-expanded="true"] [data-vanilla-toast]::before {
     bottom: 100%;
+    height: var(--toast-gap);
 }
 
 [data-toast-container][data-expanded="false"] [data-vanilla-toast]:not([data-front-toast="true"])::before {
     border-radius: inherit;
     background-color: inherit;
+    height: 100%;
 
     top: 0;
 
     pointer-events: none;
     touch-action: none;
 
+    will-change: background-color, height;
+    transition-property: background-color;
     transition-duration: var(--toast-transition-duration, 500ms);
 }
 

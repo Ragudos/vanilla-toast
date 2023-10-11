@@ -71,9 +71,16 @@ export class Toast implements ToastInterface {
                 "--front-toast-height",
                 packed_size + "px",
             );
+
+            this.src_element.style.setProperty(
+                "--toast-initial-height",
+                packed_size + "px",
+            );
             this.initial_height = packed_size;
             this.src_element.style.height = original_height;
             this.offset = 0;
+
+            console.log(packed_size);
         }
     }
 
