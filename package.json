@@ -9,6 +9,18 @@
   "publishConfig": {
     "@webdevaaron:registry": "https://npm.pkg.github.com"
   },
+  "files": [
+    "./packages/vanilla-toast/build"
+  ],
+  "exports": {
+    ".": {
+      "types": "./packages/vanilla-toast/build/index.d.ts",
+      "import": "./packages/vanilla-toast/build/index.min.mjs"
+    },
+    "./defaults.css": "./packages/vanilla-toast/build/index.min.css"
+  },
+  "main": "./packages/vanilla-toast/build/index.min.mjs",
+  "types": "./packages/vanilla-toast/build/index.d.ts",
   "scripts": {
     "build": "npm run -w @vanilla-toast/vanilla-toast build",
     "dev": "npm run -w @vanilla-toast/vanilla-toast dev",
