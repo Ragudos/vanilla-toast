@@ -32,6 +32,8 @@ Well, with all the amount of frameworks out there, it's become overwhelming. The
 
 A video of showing how the toasts are rendered:
 
+https://github.com/Ragudos/vanilla-toast/assets/133567781/306e5d59-f0c7-4c5e-91d5-d9edaf818990
+
 - neutral:
 
 <img src="./packages/docs/public/white-toast.png" width="250" alt="vanilla-toast-logo-png">
