@@ -13,7 +13,7 @@ jobs:
     - name: Publish if version has been updated
       uses: wtrocki/npm-publish-monorepo-action@2.0.0
       with: 
-        workspace: "./packages/vanilla-toast" # Required
+        workspace: "./packages" # Required
         versionFrom: "."
         tag_name: "v%s"
         tag_message: "v%s"

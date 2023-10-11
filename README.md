@@ -9,6 +9,17 @@
 # Vanilla Toast
 A toast library for vanilla lovers :heartpulse:.
 
+## Toast
+Provides all the functions possible to render a toast notification.
+- `default` - renders a neutral, black and white toast.
+- `success` - renders a check icon beside the toast message.
+- `error` - renders an x icon beside the toast message.
+- `info` - renders an i icon beside the toast message.
+- `warn` - renders a warning icon beside the toast message.
+- `loading` - renders a loading icon beside the toast message and cannot be closed unless specified.
+- `promise` - handles promises for you and renders a loading toast. Once the promise is finished, then changes the toast to either a success toast or error toast and sets a timer to close the toast. This also returns the error instead of throwing it.
+- `dismiss` - dismisses a toast.
+
 ## Why vanilla toast?
 Well, with all the amount of frameworks out there, it's become overwhelming. They are great tools, yes, but the abstraction is crazy and I did not get a change to learn about the lower level APIs like EventSource, Websocket, Clusters for concurrency, ArrayBuffers, etc. That's why I decided to make this toast library to make my life easier when I develop client-side apps with Vanilla JavaScript. Besides, I will be able to freely explore Vanilla JS and understand how libraries like React work under the hood in a clearer view.
 
