@@ -1,6 +1,5 @@
 <div>
     <img src="./packages/docs/public/icon.png" width="250" alt="vanilla-toast-logo-png">
-    <br />
       <div>
         <img alt="GitHub" src="https://img.shields.io/github/license/Ragudos/vanilla-toast">
     </div>
@@ -40,51 +39,34 @@ A video of showing how the toasts are rendered:
 - success:
 
 <img src="./packages/docs/public/success-toast-plain.png" width="250" alt="success-toast-glass-png">
-<br />
 <img src="./packages/docs/public/success-toast-glass.png" width="250" alt="success-toast-plain-png">
-<br />
 <img src="./packages/docs/public/success-toast-icons.png" width="250" alt="success-toast-icons-png">
-<br />
 
 - error:
 
 <img src="./packages/docs/public/error-toast-plain.png" width="250" alt="error-toast-glass-png">
-<br />
 <img src="./packages/docs/public/error-toast-glass.png" width="250" alt="error-toast-plain-png">
-<br />
 <img src="./packages/docs/public/error-toast-icons.png" width="250" alt="error-toast-icons-png">
-<br />
 
 - info:
 
 <img src="./packages/docs/public/info-toast-plain.png" width="250" alt="info-toast-glass-png">
-<br />
 <img src="./packages/docs/public/info-toast-glass.png" width="250" alt="info-toast-plain-png">
-<br />
 <img src="./packages/docs/public/info-toast-icons.png" width="250" alt="info-toast-icon-png">
-<br />
 
 - warn:
 
 <img src="./packages/docs/public/warn-toast-plain.png" width="250" alt="warn-toast-glass-png">
-<br />
 <img src="./packages/docs/public/warn-toast-glass.png" width="250" alt="warn-toast-plain-png">
-<br />
 <img src="./packages/docs/public/warn-toast-icons.png" width="250" alt="warn-toast-icons-png">
-<br />
 
 - loading:
 
 <img src="./packages/docs/public/loading-toast-normal.png" width="250" alt="loading-toast-normal-png">
-<br />
 <img src="./packages/docs/public/loading-toast-eclipse.png" width="250" alt="loading-toast-eclipse-png">
-<br />
 <img src="./packages/docs/public/loading-toast-broken-rounded.png" width="250" alt="loading-toast-broken-rounded-png">
-<br />
 <img src="./packages/docs/public/loading-toast-broken-straight.png" width="250" alt="loading-toast-broken-straight-png">
-<br />
 <img src="./packages/docs/public/loading-toast-broken-flat.png" width="250" alt="loading-toast-broken-flat-png">
-<br />
 
 ## Installation
 
