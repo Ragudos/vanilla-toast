@@ -2,14 +2,14 @@
 import { test, expect } from "@playwright/test";
 
 test("Page has loaded", async ({ page }) => {
-    await page.goto("/");
+    await page.goto("hhtp://127.0.0.1:3000");
     await expect(page).toHaveTitle("Toast Tests");
 });
 
 test("All test elements have loaded and toast container can be successfully mounted", async ({
     page,
 }) => {
-    await page.goto("/");
+    await page.goto("hhtp://127.0.0.1:3000");
     const toast_trigger = page.getByTestId("toast-trigger");
     const mount_toast_trigger = page.getByTestId("mount-toast");
     const toast_container = page.getByTestId("toast-container");
@@ -30,7 +30,7 @@ test("All test elements have loaded and toast container can be successfully moun
 test("Check if toast can be rendered successfully.", async ({
     page,
 }, test_info) => {
-    await page.goto("/");
+    await page.goto("hhtp://127.0.0.1:3000");
     const mount_toast_trigger = page.getByTestId("mount-toast");
     const toast_trigger = page.getByTestId("toast-trigger");
 
