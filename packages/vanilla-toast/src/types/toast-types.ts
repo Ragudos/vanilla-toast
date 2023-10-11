@@ -114,6 +114,12 @@ export type ToastOptions = {
      * is dismissed if this toast is not closed automatically.
      */
     animation_duration?: number;
+
+    /** ### Toast automatically close
+     * Indicates whether to close this toast automatically
+     *
+     * **NOTE: If this is set to false, you must be the one to close this toast**
+     */
     automatically_close?: boolean;
 
     /** ### Toast close button options
@@ -216,7 +222,6 @@ export interface ToastInterface {
      *
      */
     offset: number;
-    automatically_close: boolean;
 }
 
 export interface StoreInterface {
@@ -252,6 +257,53 @@ export interface StoreInterface {
     /** Calls all active listeners to update their state */
     update(_toast: Toast, type: "add" | "remove" | "animate-out"): void;
 
+    /** Updates the contents of a toast. */
+    update_toast(_toast_id: string, _updated_props: ToastProps): void;
+
     remove_timer(_toast_id: string): void;
     add_timer(_toast_id: string, _time: number): void;
 }
+
+interface MainToast {
+    default(
+        props: ToastProps,
+        options?: ToastOptions,
+        type?: ToastTypes,
+    ): ReturnValue;
+
+    /** ## Toast success
+     *  Renders a check icon beside the toast message.
+     */
+    success(props: ToastProps, options?: ToastOptions): ReturnValue;
+    /** ## Toast error
+     *  Renders an x icon beside the toast message.
+     */
+    error(props: ToastProps, options?: ToastOptions): ReturnValue;
+    /** ## Toast info
+     *  Renders an i icon beside the toast message.
+     */
+    info(props: ToastProps, options?: ToastOptions): ReturnValue;
+    /** ## Toast warning
+     *  Renders a warning icon beside the toast message.
+     */
+    warn(props: ToastProps, options?: ToastOptions): ReturnValue;
+    /** ## Toast Loading
+     *  Renders a loading icon beside the toast message and cannot be closed unless specified.
+     */
+    loading(props: ToastProps, options?: ToastOptions): ReturnValue;
+    /** ## Toast Promise
+     *  Handles promises for you and renders a loading toast. Once the promise is finished, then changes the toast to either a success toast or error toast and sets a timer to close the toast.
+     *  @returns
+     *  error | response data
+     */
+    promise<T, K>(
+        callback: (...args: T[]) => Promise<K>,
+        ...args: T[]
+    ): Promise<K>;
+    /** ## Toast dismiss
+     *  Removes a toast.
+     */
+    dismiss(toast_id: string): string;
+}
+
+export type { MainToast as Toast };

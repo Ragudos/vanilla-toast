@@ -1,13 +1,8 @@
-! STILL IN DEVELOPMENT ! FUNCTIONS ARE PRONE TO CHANGE
-
 <div>
     <img src="./packages/docs/public/icon.png" width="250" alt="vanilla-toast-logo-png">
     <br />
-    <div>
-        <img alt="GitHub Workflow Status (with event)" src="https://img.shields.io/github/actions/workflow/status/Ragudos/vanilla-toast/playwright.yml">
+      <div>
         <img alt="GitHub" src="https://img.shields.io/github/license/Ragudos/vanilla-toast">
-        <img alt="GitHub code size in bytes" src="https://img.shields.io/github/languages/code-size/Ragudos/vanilla-toast">
-        <img alt="GitHub commit activity (branch)" src="https://img.shields.io/github/commit-activity/t/Ragudos/vanilla-toast">
     </div>
 </div>
 
@@ -15,44 +10,108 @@
 A toast library for vanilla lovers :heartpulse:.
 
 ## Why vanilla toast?
-Well, with all the amount of frameworks out there, it's become overwhelming. They are great tools, yes, but the abstraction is crazy and I did not get a change to learn about the lower level APIs like EventSource, Websocket, Clusters for concurrency, ArrayBuffers, etc. That's why I decided to make this toast library to make my life easier when I develop client-side apps with Vanilla JavaScript. Besides, I will be able to freely explore Vanilla JS and understand how libraries like React work under the hood in a clear view.
-
-This library will be up to ARIA accessibility standards as much as possible. The few uses implemented already are:
-
-- role attributes
-- aria-live attributes
-- prefers-reduced-motion listener
+Well, with all the amount of frameworks out there, it's become overwhelming. They are great tools, yes, but the abstraction is crazy and I did not get a change to learn about the lower level APIs like EventSource, Websocket, Clusters for concurrency, ArrayBuffers, etc. That's why I decided to make this toast library to make my life easier when I develop client-side apps with Vanilla JavaScript. Besides, I will be able to freely explore Vanilla JS and understand how libraries like React work under the hood in a clearer view.
 
 ## Features
 - Dependency Free
-- Customizable
 - Follows the ARIA Conventions as much as possible
-- Built in animations, such as:
-  - popup
-  - fade-in
-  - slide-down
-  - slide-left
-  - slide-right
-  - slide-up
+- Stackable toasts
+- Smooth movements
+
+## Showcase
+
+A video of showing how the toasts are rendered:
+
+<video autoplay>
+  <source src="./packages/docs/public/showcase-vid.mp4"></source>
+</video>
+<br />
+
+- neutral:
+
+<img src="./packages/docs/public/white-toast.png" width="250" alt="vanilla-toast-logo-png">
+
+- success:
+
+<img src="./packages/docs/public/success-toast-plain.png" width="250" alt="vanilla-toast-logo-png">
+<br />
+<img src="./packages/docs/public/success-toast-glass.png" width="250" alt="vanilla-toast-logo-png">
+<br />
+<img src="./packages/docs/public/success-toast-icons.png" width="250" alt="vanilla-toast-logo-png">
+<br />
+
+- error:
+
+<img src="./packages/docs/public/erro-toast-plain.png" width="250" alt="vanilla-toast-logo-png">
+<br />
+<img src="./packages/docs/public/erro-toast-glass.png" width="250" alt="vanilla-toast-logo-png">
+<br />
+<img src="./packages/docs/public/erro-toast-icons.png" width="250" alt="vanilla-toast-logo-png">
+<br />
+
+- info:
+
+<img src="./packages/docs/public/info-toast-plain.png" width="250" alt="vanilla-toast-logo-png">
+<br />
+<img src="./packages/docs/public/info-toast-glass.png" width="250" alt="vanilla-toast-logo-png">
+<br />
+<img src="./packages/docs/public/info-toast-icons.png" width="250" alt="vanilla-toast-logo-png">
+<br />
+
+- warn:
+
+<img src="./packages/docs/public/warn-toast-plain.png" width="250" alt="vanilla-toast-logo-png">
+<br />
+<img src="./packages/docs/public/warn-toast-glass.png" width="250" alt="vanilla-toast-logo-png">
+<br />
+<img src="./packages/docs/public/warn-toast-icons.png" width="250" alt="vanilla-toast-logo-png">
+<br />
+
+- loading:
+
+<img src="./packages/docs/public/loading-toast-normal.png" width="250" alt="vanilla-toast-logo-png">
+<br />
+<img src="./packages/docs/public/loading-toast-eclipse.png" width="250" alt="vanilla-toast-logo-png">
+<br />
+<img src="./packages/docs/public/loading-toast-broken-rounded.png" width="250" alt="vanilla-toast-logo-png">
+<br />
+<img src="./packages/docs/public/loading-toast-broken-straight.png" width="250" alt="vanilla-toast-logo-png">
+<br />
+<img src="./packages/docs/public/loading-toast-broken-flat.png" width="250" alt="vanilla-toast-logo-png">
+<br />
+
+## Installation
+
+npm:
+
+```bash
+  npm install @webdevaaron/vanilla-toast
+```
+
+pnpm:
+
+```bash
+  pnpm install @webdevaaron/vanilla-toast
+```
 
 ## How to use
 
 1. From your main JavaScript file, import the necessary files:
 
 ```ts
-  import { toast, initialize_toast } from "@vanilla-toast/vanilla-toast";
-  import "@vanilla-toast/vanilla-toast/build/index.css";
+  import { toast, mount_toast } from "@vanilla-toast/vanilla-toast";
+  import "@vanilla-toast/vanilla-toast/build/index.min.css";
 ```
 
 2. Mount the toast container:
 
 ```ts
   // You can pass in options to this function.
-  initialize_toast();
+  mount_toast();
 
   // or
   window.addEventListener("DOMContentLoaded", () => {
-    initialize_toast();
+    mount_toast();
   });
 ```
 
@@ -60,7 +119,7 @@ This library will be up to ARIA accessibility standards as much as possible. The
 
 ```ts
   // Neutral
-  toast({ message: "Hello, World!" });
+  toast.default({ message: "Hello, World!" });
 
   // Success
   toast.success({ messsage: "Hello, World!" });
@@ -69,7 +128,7 @@ This library will be up to ARIA accessibility standards as much as possible. The
   toast.error({ message: "Hello, World!" });
 
   // Promise
-  const response = toast.promise(fetch, "https://jsonplaceholder.typicode.com/posts");
+  const response = await toast.promise(fetch, "https://jsonplaceholder.typicode.com/posts");
   
   if (!(response instanceof Error)) {
     const data = response.json();

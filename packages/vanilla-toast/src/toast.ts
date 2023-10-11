@@ -25,7 +25,6 @@ export class Toast implements ToastInterface {
     z_index: number;
     initial_height: number;
     offset: number;
-    automatically_close: boolean;
     created_on: number;
 
     private src_element: null | HTMLElement;
@@ -41,6 +40,8 @@ export class Toast implements ToastInterface {
     ) {
         if (!$id("toast-container")) {
             console.error(new Error("Please mount the toast container first."));
+
+            return;
         }
 
         this.src_element = null;
@@ -48,10 +49,6 @@ export class Toast implements ToastInterface {
         this.id = id;
         this.props = props;
         this.options = options;
-        this.automatically_close =
-            options.automatically_close == undefined
-                ? true
-                : options.automatically_close;
         this.is_dismissed = is_dismissed;
         this.type = type;
         this.idx = idx;
@@ -77,8 +74,6 @@ export class Toast implements ToastInterface {
             this.initial_height = packed_size;
             this.src_element.style.height = original_height;
             this.offset = 0;
-
-            console.log(packed_size);
         }
     }
 
@@ -88,6 +83,8 @@ export class Toast implements ToastInterface {
             "data-front-toast": true,
             "data-vanilla-toast": true,
             "data-dismissed": "false",
+            "data-theme": this.options.theme,
+            "data-style": this.options.style,
             "data-type": this.type,
             id: `toast-${this.id}`,
             "aria-live": aria_live_map[this.options.importance],
@@ -115,8 +112,12 @@ export class Toast implements ToastInterface {
             "aria-pressed": "false",
             "aria-label": "Close Notification Toast",
         });
+        const text_container = create_element("div", {
+            "data-text-container": "true",
+        });
         const message_container = create_element("p", {
             textContent: this.props.message,
+            id: `message-toast-${this.id}`,
         });
         const aborter = new AbortController();
         const signal = aborter.signal;
@@ -144,14 +145,26 @@ export class Toast implements ToastInterface {
             const icon = get_icon(this.type, this.options.loading_icon);
             const icon_container = create_element("div", {
                 "data-icon-container": "true",
+                id: `icon-toast-${this.id}`,
             });
 
             icon_container.appendChild(icon);
             this.src_element.append(icon_container);
         }
 
+        if (this.props.title) {
+            const title = create_element("h6", {
+                textContent: this.props.title,
+                id: `title-toast-${this.id}`,
+                "data-title": "true",
+            });
+
+            text_container.append(title);
+        }
+
+        text_container.append(message_container);
         button_container.appendChild(close_button);
-        this.src_element.append(message_container);
+        this.src_element.append(text_container);
         this.src_element.append(button_container);
         $id("toast-container").append(this.src_element);
 
@@ -189,9 +202,6 @@ export class Toast implements ToastInterface {
         }
 
         this.src_element.style.setProperty("--toast-index", this.idx + "");
-        this.src_element.style.setProperty(
-            "--toast-z-index",
-            this.z_index + "",
-        );
+        this.src_element.style.setProperty("--z-index", this.z_index + "");
     };
 }

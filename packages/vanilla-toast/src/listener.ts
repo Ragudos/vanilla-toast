@@ -68,6 +68,7 @@ export function listen_to_page_events() {
     const leftover_duration_of_toasts: Array<{
         time_left: number;
         toast_id: string;
+        removed_on: number;
     }> = [];
     // to first finish removing or adding timers before doing either again.
     const queue: Array<() => void> = [];
@@ -112,7 +113,11 @@ export function listen_to_page_events() {
         ) {
             const duration = leftover_duration_of_toasts[idx];
 
-            ToastObserver.add_timer(duration.toast_id, duration.time_left);
+            ToastObserver.add_timer(
+                duration.toast_id,
+                duration.time_left,
+                duration.removed_on,
+            );
 
             leftover_duration_of_toasts.pop();
         }
@@ -120,7 +125,7 @@ export function listen_to_page_events() {
 
     function remove_timers() {
         for (const toast of ToastObserver.toasts.values()) {
-            if (toast.automatically_close) {
+            if (toast.options.automatically_close) {
                 const time_left =
                     toast.options.lifetime - (Date.now() - toast.created_on);
 
@@ -130,6 +135,7 @@ export function listen_to_page_events() {
                     leftover_duration_of_toasts.push({
                         toast_id: toast.id,
                         time_left: time_left,
+                        removed_on: Date.now(),
                     });
                 }
             }

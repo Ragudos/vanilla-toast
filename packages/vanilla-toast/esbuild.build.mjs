@@ -9,5 +9,9 @@ await esbuild.build({
     format: "esm",
     splitting: true,
     keepNames: true,
-    minify: true
+    outExtension: {
+        ".js": ".min.mjs",
+        ".css": ".min.css",
+    },
+    minify: true,
 });

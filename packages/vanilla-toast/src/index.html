@@ -6,6 +6,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Toast Tests</title>
     <link rel="stylesheet" href="./index.css" />
+    <style>
+        /* body {
+            background-color: black;
+            color: white;
+        } */
+    </style>
 </head>
 
 <body>
@@ -18,23 +24,7 @@
             mount_toaster();
 
             document.querySelector("[data-testid='toast-trigger']").addEventListener("click", async () => {
-                if (Math.random() < 0.5) {
-                    toast.loading({ message: "Hello, World!" }, {
-                        automatically_close: false,
-                        close_button: {
-                            is_shown_on_hover: true,
-                        },
-                        loading_icon: "broken-straight",
-                    });
-                } else {
-                    toast.loading({ message: "Hello, Worlfdfdsfsddddddddddddddddddddddddddddddddddddddddddddddddddddddddddfd!" }, {
-                        automatically_close: false,
-                        close_button: {
-                            is_shown_on_hover: true,
-                        },
-                        loading_icon: "broken-straight",
-                    });
-        }
+                toast.loading({ message: "Loading..." }, { loading_icon: "broken-flat", style: "icons", automatically_close: false, theme: "light" });
             });
         })
     </script>

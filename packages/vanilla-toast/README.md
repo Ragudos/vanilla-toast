@@ -3,11 +3,8 @@
 <div>
     <img src="./packages/docs/public/icon.png" width="250" alt="vanilla-toast-logo-png">
     <br />
-    <div>
-        <img alt="GitHub Workflow Status (with event)" src="https://img.shields.io/github/actions/workflow/status/Ragudos/vanilla-toast/playwright.yml">
+      <div>
         <img alt="GitHub" src="https://img.shields.io/github/license/Ragudos/vanilla-toast">
-        <img alt="GitHub code size in bytes" src="https://img.shields.io/github/languages/code-size/Ragudos/vanilla-toast">
-        <img alt="GitHub commit activity (branch)" src="https://img.shields.io/github/commit-activity/t/Ragudos/vanilla-toast">
     </div>
 </div>
 
@@ -15,7 +12,7 @@
 A toast library for vanilla lovers :heartpulse:.
 
 ## Why vanilla toast?
-Well, with all the amount of frameworks out there, it's become overwhelming. They are great tools, yes, but the abstraction is crazy and I did not get a change to learn about the lower level APIs like EventSource, Websocket, Clusters for concurrency, ArrayBuffers, etc. That's why I decided to make this toast library to make my life easier when I develop client-side apps with Vanilla JavaScript.
+Well, with all the amount of frameworks out there, it's become overwhelming. They are great tools, yes, but the abstraction is crazy and I did not get a change to learn about the lower level APIs like EventSource, Websocket, Clusters for concurrency, ArrayBuffers, etc. That's why I decided to make this toast library to make my life easier when I develop client-side apps with Vanilla JavaScript. Besides, I will be able to freely explore Vanilla JS and understand how libraries like React work under the hood in a clear view.
 
 This library will be up to ARIA accessibility standards as much as possible. The few uses implemented already are:
 
@@ -25,34 +22,42 @@ This library will be up to ARIA accessibility standards as much as possible. The
 
 ## Features
 - Dependency Free
-- Customizable
 - Follows the ARIA Conventions as much as possible
-- Built in animations, such as:
-  - popup
-  - fade-in
-  - slide-down
-  - slide-left
-  - slide-right
-  - slide-up
+- Stackable toasts
+- Smooth movements
+
+## Installation
+
+npm:
+
+```bash
+  npm install @webdevaaron/vanilla-toast
+```
+
+pnpm:
+
+```bash
+  pnpm install @webdevaaron/vanilla-toast
+```
 
 ## How to use
 
 1. From your main JavaScript file, import the necessary files:
 
 ```ts
-  import { toast, initialize_toast } from "@vanilla-toast/vanilla-toast";
-  import "@vanilla-toast/vanilla-toast/build/index.css";
+  import { toast, mount_toast } from "@vanilla-toast/vanilla-toast";
+  import "@vanilla-toast/vanilla-toast/build/index.min.css";
 ```
 
 2. Mount the toast container:
 
 ```ts
   // You can pass in options to this function.
-  initialize_toast();
+  mount_toast();
 
   // or
   window.addEventListener("DOMContentLoaded", () => {
-    initialize_toast();
+    mount_toast();
   });
 ```
 

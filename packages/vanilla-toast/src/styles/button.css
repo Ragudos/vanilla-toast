@@ -13,6 +13,10 @@
     padding: 0.25rem;
 }
 
+[data-vanilla-toast][data-type="loading"] [data-close-button-container] {
+    display: none !important;
+}
+
 [data-vanilla-toast] [data-close-button-container][data-show-on-hover="true"] {
     opacity: 0;
 }
@@ -72,5 +76,5 @@
     top: 50%;
     transform: translateY(-50%) rotate(var(--rotate));
 
-    background-color: var(--color, black);
+    background-color: hsl(var(--foreground-color, 0 0% 0%));
 }

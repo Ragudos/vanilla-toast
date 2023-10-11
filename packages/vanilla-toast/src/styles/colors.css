@@ -1,4 +1,7 @@
 [data-vanilla-toast] {
+    --toast-box-shadow-color: hsl(var(--foreground-color) / 0.25);
+    --neutral: 0 0% 98%;
+    --neutral-foreground: 0 0% 0%;
     --success: 118 70% 55%;
     --success-foreground: 43 90% 4%;
     --error: 0 69% 50%;
@@ -9,9 +12,12 @@
     --warn-foreground: 43 90% 4%;
 }
 
-[data-toast-container][data-theme="dark"] [data-vanilla-toast] {
+[data-vanilla-toast][data-theme="dark"] {
+    --toast-box-shadow-color: hsl(var(--foreground-color) / 0.1);
+    --neutral: 0 0% 6%;
+    --neutral-foreground: 0 0% 100%;
     --success: 120 17% 24%;
-    --success-foreground: 43 90% 4%;
+    --success-foreground: 43 90% 96%;
     --error: 0 82% 15%;
     --error-foreground: 45 100% 96%;
     --info: 196 81% 11%;
@@ -21,9 +27,12 @@
 }
 
 @media (prefers-color-scheme: dark) {
-    [data-toast-container][data-theme="system"] [data-vanilla-toast] {
+    [data-vanilla-toast][data-theme="system"] {
+        --toast-box-shadow-color: hsl(var(--foreground-color) / 0.1);
+        --neutral: 0 0% 6%;
+        --neutral-foreground: 0 0% 100%;
         --success: 120 17% 24%;
-        --success-foreground: 43 90% 4%;
+        --success-foreground: 43 90% 96%;
         --error: 0 82% 15%;
         --error-foreground: 45 100% 96%;
         --info: 196 81% 11%;
@@ -31,4 +40,66 @@
         --warn: 67 72% 38%;
         --warn-foreground: 43 90% 4%;
     }
+}
+
+[data-vanilla-toast][data-type="neutral"],
+[data-vanilla-toast][data-type="loading"] {
+    --background-color: var(--neutral);
+    --foreground-color: var(--neutral-foreground);
+    --stroke-color: var(--neutral-foreground);
+}
+
+[data-vanilla-toast][data-style="monochrome"],
+[data-vanilla-toast][data-style="icons"] {
+    --background-color: var(--neutral) !important;
+}
+
+[data-vanilla-toast][data-type="success"] {
+    --background-color: var(--success);
+    --foreground-color: var(--success-foreground);
+    --stroke-color: var(--success);
+    --fill-color: var(--success);
+}
+
+[data-vanilla-toast][data-type="error"] {
+    --background-color: var(--error);
+    --foreground-color: var(--error-foreground);
+    --stroke-color: var(--error);
+    --fill-color: var(--error);
+}
+
+[data-vanilla-toast][data-type="info"] {
+    --background-color: var(--info);
+    --foreground-color: var(--info-foreground);
+    --stroke-color: var(--info-foreground);
+    --fill-color: var(--info);
+}
+
+[data-vanilla-toast][data-type="warn"] {
+    --background-color: var(--warn);
+    --foreground-color: var(--warn-foreground);
+    --stroke-color: var(--warn-foreground);
+    --fill-color: var(--warn);
+}
+
+[data-vanilla-toast][data-style="glass"] {
+    background-color: hsl(var(--background-color) / 0.5);
+
+    backdrop-filter: blur(2rem);
+
+    border: 2px solid hsl(var(--background-color));
+}
+
+[data-vanilla-toast][data-style="plain"] {
+    background-color: hsl(var(--background-color));
+    color: hsl(var(--foreground-color));
+}
+
+[data-vanilla-toast][data-style="icons"] {
+    color: hsl(var(--neutral-foreground));
+}
+
+[data-vanilla-toast][data-style="icons"] svg {
+    stroke: hsl(var(--stroke-color));
+    fill: hsl(var(--fill-color));
 }

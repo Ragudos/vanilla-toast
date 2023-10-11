@@ -2,16 +2,12 @@
 import { test, expect } from "@playwright/test";
 
 test("Page has loaded", async ({ page }) => {
-    await page.goto("http://127.0.0.1:3000");
-
     await expect(page).toHaveTitle("Toast Tests");
 });
 
 test("All test elements have loaded and toast container can be successfully mounted", async ({
     page,
 }) => {
-    await page.goto("http://127.0.0.1:3000");
-
     const toast_trigger = page.getByTestId("toast-trigger");
     const mount_toast_trigger = page.getByTestId("mount-toast");
     const toast_container = page.getByTestId("toast-container");
@@ -26,26 +22,19 @@ test("All test elements have loaded and toast container can be successfully moun
 
     await mount_toast_trigger.click();
 
-    const toast_holder = page.getByTestId("toast-holder");
-
     expect(await toast_container.getAttribute("id")).toBe("toast-container");
-    expect(await toast_container.getAttribute("title")).toBe("Notifications");
-
-    expect(await toast_holder.getAttribute("id")).toBe("toast-holder");
 });
 
 test("Check if toast can be rendered successfully.", async ({
     page,
 }, test_info) => {
-    await page.goto("http://127.0.0.1:3000");
-
     const mount_toast_trigger = page.getByTestId("mount-toast");
     const toast_trigger = page.getByTestId("toast-trigger");
 
     await mount_toast_trigger.click();
     await toast_trigger.click();
 
-    const toast = page.locator("[role='alert']");
+    const toast = page.locator("[data-vanilla-toast]");
 
     await toast.waitFor({
         state: "attached",

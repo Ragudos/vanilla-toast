@@ -14,6 +14,7 @@ export function mount_toaster(options?: ToastContainerOptions) {
     const section = create_element("section", {
         "aria-label": "Notifcations (Alt + T). Escape to unexpand.",
         "data-toast-section-container": "true",
+        "data-testid": "toast-section-container",
         id: "toast-section-container",
     });
     const toast_container = create_element("ol", {
@@ -24,6 +25,7 @@ export function mount_toaster(options?: ToastContainerOptions) {
         "data-position-x": options?.position?.x || DEFAULT_POSITION.x,
         "data-position-y": options?.position?.y || DEFAULT_POSITION.y,
         "data-toast-container": "true",
+        "data-testid": "container",
         id: "toast-container",
         "aria-describedby": "toast-section-heading",
     });

@@ -25,5 +25,5 @@
     "outDir": "build",
   },
   "include": ["**/*.ts", "**/*.module.css"],
-  "exclude": ["node_modules", "dist", "build", "**/*.test.ts"]
+  "exclude": ["node_modules", "dist", "build", "**/*.test.ts", "src/legacy/**"]
 }
