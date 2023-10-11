@@ -92,6 +92,7 @@ export function listen_to_page_events() {
         if (!is_pressed) {
             enqueue(remove_timers);
             is_pressed = true;
+            $id("toast-container").setAttribute("data-expanded", "true");
         }
     });
 
@@ -99,6 +100,7 @@ export function listen_to_page_events() {
         if (is_pressed) {
             enqueue(add_timers);
             is_pressed = false;
+            $id("toast-container").setAttribute("data-expanded", "false");
         }
     });
 
