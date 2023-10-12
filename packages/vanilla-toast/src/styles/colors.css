@@ -83,9 +83,9 @@
 }
 
 [data-vanilla-toast][data-style="glass"] {
-    background-color: hsl(var(--background-color) / 0.5);
+    background-color: hsl(var(--background-color) / 0.87);
 
-    backdrop-filter: blur(2rem);
+    backdrop-filter: blur(5rem);
 
     border: 2px solid hsl(var(--background-color));
 }

@@ -1,0 +1,92 @@
+#guide button {
+    color: black;
+    transition: 100ms ease-in;
+}
+
+#guide button[data-primary] {
+    background-color: hsl(var(--primary)) !important;
+}
+
+#guide button:not([data-primary]) {
+    opacity: 0.5;
+}
+
+#guide button:hover:not([data-primary]) {
+    opacity: 0.87;
+}
+
+#guide button[data-active="true"] {
+    opacity: 1;
+}
+
+#guide {
+    gap: 2rem;
+}
+
+#guide button[data-type="default"] {
+    background-color: hsl(var(--foreground));
+    color: hsl(var(--background));
+}
+
+#guide button[data-type="success"] {
+    --color: green;
+    background-color: green;
+}
+
+#guide button[data-type="error"] {
+    --color: red;
+    background-color: red;
+}
+
+#guide button[data-type="warn"] {
+    --color: yellow;
+    background-color: yellow;
+}
+
+#guide button[data-type="info"] {
+    --color: blue;
+    background-color: blue;
+    color: white;
+}
+
+#guide button:hover {
+    box-shadow: 0px 8px 16px var(--color);
+    transform: translateY(-10%);
+}
+
+#guide ul {
+    display: flex;
+    gap: 1rem;
+    align-items: center;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+
+    margin-top: 1rem;
+}
+
+#guide button[data-type="loading"] {
+    background-color: inherit;
+
+    border: 2px solid hsl(var(--foreground));
+    color: inherit;
+}
+
+#guide button {
+    background-color: hsl(var(--background));
+    color: hsl(var(--foreground));
+}
+
+#guide button[data-theme="dark"] {
+    background-color: rgb(26, 25, 25);
+    color: white;
+}
+
+#guide button[data-type="warn"] {
+    color: black;
+}
+
+#guide button[data-theme="light"] {
+    background-color: white;
+    color: black;
+}

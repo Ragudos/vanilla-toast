@@ -1,9 +1,16 @@
 {
   "name": "@vanilla-toast/vanilla-toast",
-  "version": "0.7.0",
+  "version": "0.7.3",
   "type": "module",
-  "main": "build/index.js",
-  "types": "build/@types/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./build/@types/index.d.ts",
+      "import": "./build/index.min.mjs"
+    },
+    "./index.min.css": "./build/index.min.css"
+  },
+  "main": "./build/index.min.mjs",
+  "types": "./build/@types/index.d.ts",
   "publishConfig": {
     "registry": "https://npm.pkg.github.com"
   },

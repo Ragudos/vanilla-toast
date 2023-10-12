@@ -1,12 +1,6 @@
 import type { LoadingIconTypes, ToastTypes } from "./types/toast-types";
 import { create_element, create_svg } from "./render";
 
-import { rolling_spinner } from "./assets/rolling-spinner";
-import { flat_broken_spinner } from "./assets/flat-broken-spinner";
-import { rounded_broken_spinner } from "./assets/rounded-broken-spinner";
-import { straight_broken_spinner } from "./assets/straight-broken-spinner";
-import { eclipse_spinner } from "./assets/eclipse_spinner";
-
 const DEFAULT_SVG_PROPERTIES = {
     xmlns: "http://www.w3.org/2000/svg",
     fill: "none",
@@ -68,27 +62,39 @@ export function loading_icon(type: LoadingIconTypes = "normal") {
 
     switch (type) {
         case "normal":
-            div.innerHTML = rolling_spinner;
+            import("./assets/rolling-spinner").then((module) => {
+                div.innerHTML = module.rolling_spinner;
+            });
             break;
 
         case "broken-flat":
-            div.innerHTML = flat_broken_spinner;
+            import("./assets/flat-broken-spinner").then((module) => {
+                div.innerHTML = module.flat_broken_spinner;
+            });
             break;
 
         case "broken-rounded":
-            div.innerHTML = rounded_broken_spinner;
+            import("./assets/rounded-broken-spinner").then((module) => {
+                div.innerHTML = module.rounded_broken_spinner;
+            });
             break;
 
         case "broken-straight":
-            div.innerHTML = straight_broken_spinner;
+            import("./assets/straight-broken-spinner").then((module) => {
+                div.innerHTML = module.straight_broken_spinner;
+            });
             break;
 
         case "eclipse":
-            div.innerHTML = eclipse_spinner;
+            import("./assets/eclipse_spinner").then((module) => {
+                div.innerHTML = module.eclipse_spinner;
+            });
             break;
 
         default:
-            div.innerHTML = rolling_spinner;
+            import("./assets/rolling-spinner").then((module) => {
+                div.innerHTML = module.rolling_spinner;
+            });
     }
 
     return div;

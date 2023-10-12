@@ -1,29 +1,28 @@
 {
   "name": "@webdevaaron/vanilla-toast",
-  "version": "0.7.0",
+  "version": "0.7.3",
   "description": "A dependency-free toast notification library for vanilla users of JavaScript!",
   "type": "module",
   "engines": {
     "node": ">=18.18.0"
-  },
-  "publishConfig": {
-    "@webdevaaron:registry": "https://npm.pkg.github.com"
   },
   "files": [
     "./packages/vanilla-toast/build"
   ],
   "exports": {
     ".": {
-      "types": "./packages/vanilla-toast/build/index.d.ts",
+      "types": "./packages/vanilla-toast/build/@types/index.d.ts",
       "import": "./packages/vanilla-toast/build/index.min.mjs"
     },
-    "./defaults.css": "./packages/vanilla-toast/build/index.min.css"
+    "./index.min.css": "./packages/vanilla-toast/build/index.min.css"
   },
   "main": "./packages/vanilla-toast/build/index.min.mjs",
-  "types": "./packages/vanilla-toast/build/index.d.ts",
+  "types": "./packages/vanilla-toast/build/@types/index.d.ts",
   "scripts": {
     "build": "npm run -w @vanilla-toast/vanilla-toast build",
     "dev": "npm run -w @vanilla-toast/vanilla-toast dev",
+    "dev:docs": "npm run -w @vanilla-toast/docs dev",
+    "build:docs": "npm run -w @vanilla-toast/docs build",
     "browser:install": "pnpm exec playwright install --with-deps",
     "test": "pnpm exec playwright test && pnpm exec playwright show-report",
     "lint": "eslint ./",
@@ -33,7 +32,8 @@
     "prepare": "husky install"
   },
   "workspaces": [
-    "./packages/vanilla-toast"
+    "./packages/vanilla-toast",
+    "./packages/docs"
   ],
   "keywords": [
     "vanilla-toast",

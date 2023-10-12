@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <meta name="title" content="Vanilla Toast">
+    <meta name="description" content="A documentation website for Vanilla Toast">
+    <title>Vanilla Toast</title>
+    <link rel="stylesheet" href="./index.min.css" />
+    <link rel="stylesheet" href="./styles/globals.min.css" />
+    <script src="./index.min.mjs" type="module" defer></script>
+</head>
+
+<body>
+    <header class="header">
+        <div class="container">
+            <a class="logo no-hover-effect" href="#">Vanilla Toast.</a>
+            <div class="user-nav-container desktop">
+                <nav>
+                    <ul>
+                        <li>
+                            <a href="#features">Features</a>
+                        </li>
+                        <li>
+                            <a href="#guide">Try it out</a>
+                        </li>
+                        <li>
+                            <a href="#contact">Contact Me</a>
+                        </li>
+                    </ul>
+                </nav>
+
+                <button type="button" id="change-theme" aria-pressed="false" aria-label="Change Theme to Light">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                        stroke="currentColor" width="24" height="24">
+                        <path stroke-linecap="round" stroke-linejoin="round"
+                            d="M12 3v2.25m6.364.386l-1.591 1.591M21 12h-2.25m-.386 6.364l-1.591-1.591M12 18.75V21m-4.773-4.227l-1.591 1.591M5.25 12H3m4.227-4.773L5.636 5.636M15.75 12a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0z" />
+                    </svg>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <main class="container">
+        <section class="hero">
+            <article>
+                <div>
+                    <h1>
+                        Vanilla Toast
+                    </h1>
+                    <p>A dependency&hyphen;free toast notification library for vanilla lovers &hearts;</p>
+                </div>
+            </article>
+        </section>
+
+        <section id="features">
+            <h1>Features</h1>
+
+            <ul>
+                <li>Smooth like butta!</li>
+                <li>Stackable!</li>
+                <li>Semantically colored!</li>
+                <li>Written in Vanilla!</li>
+                <li>Dark & Light Themes!</li>
+            </ul>
+        </section>
+
+
+        <section id="guide">
+            <div>
+                <h1>Try it out! Press Alt + T to expand.</h1>
+
+                <div>
+                    <button type="button" data-primary data-type="default">
+                        I want a toast!
+                    </button>
+                </div>
+            </div>
+
+            <div>
+                <h2>Toast types</h2>
+
+                <ul>
+                    <li>
+                        <button type="button" data-active="true" data-render="true" data-type="default">
+                            Neutral
+                        </button>
+                    </li>
+                    <li>
+                        <button type="button" data-render="true" data-type="success">
+                            Success
+                        </button>
+                    </li>
+                    <li>
+                        <button type="button" data-render="true" data-type="error">
+                            Error
+                        </button>
+                    </li>
+                    <li>
+                        <button type="button" data-render="true" data-type="warn">
+                            Warn
+                        </button>
+                    </li>
+                    <li>
+                        <button type="button" data-render="true" data-type="info">
+                            Info
+                        </button>
+                    </li>
+                    <li>
+                        <button type="button" data-render="true" data-type="loading">
+                            Loading
+                        </button>
+                    </li>
+                </ul>
+            </div>
+
+            <div>
+                <h2>Set toast position</h2>
+
+                <ul>
+                    <li>
+                        <button type="button" data-position="center" data-render="true" data-type="position">
+                            Center
+                        </button>
+                    </li>
+                    <li>
+                        <button type="button" data-active="true" data-position="right" data-render="true"
+                            data-type="position">
+                            Right
+                        </button>
+                    </li>
+                    <li>
+                        <button type="button" data-position="left" data-render="true" data-type="position">
+                            Left
+                        </button>
+                    </li>
+                    <li>
+                        <button type="button" data-active="true" data-position="top" data-render="true"
+                            data-type="position">
+                            Top
+                        </button>
+                    </li>
+                    <li>
+                        <button type="button" data-position="bottom" data-render="true" data-type="position">
+                            Bottom
+                        </button>
+                    </li>
+                </ul>
+            </div>
+
+            <div>
+                <h2>Set the theme!</h2>
+
+                <ul>
+                    <li>
+                        <button type="button" data-active="true" data-theme="dark" data-render="true" data-type="theme">
+                            Dark
+                        </button>
+                    </li>
+                    <li>
+                        <button type="button" data-theme="light" data-render="true" data-type="theme">
+                            Light
+                        </button>
+                    </li>
+                    <li>
+                        <button type="button" data-theme="system" data-render="true" data-type="theme">
+                            System
+                        </button>
+                    </li>
+                </ul>
+            </div>
+
+            <div>
+                <h2>Choose which style you want!</h2>
+
+                <ul>
+                    <li>
+                        <button type="button" data-active="true" data-style="glass" data-render="true"
+                            data-type="style">
+                            Glass
+                        </button>
+                    </li>
+                    <li>
+                        <button type="button" data-style="plain" data-render="true" data-type="style">
+                            Plain
+                        </button>
+                    </li>
+                    <li>
+                        <button type="button" data-style="icons" data-render="true" data-type="style">
+                            Icons
+                        </button>
+                    </li>
+                    <li>
+                        <button type="button" data-style="monochrome" data-render="true" data-type="style">
+                            Monochrome
+                        </button>
+                    </li>
+                </ul>
+            </div>
+        </section>
+    </main>
+</body>
+
+</html>

@@ -48,6 +48,8 @@
 
     pointer-events: none;
     touch-action: none;
+
+    z-index: 999;
 }
 
 [data-toast-container] > * {

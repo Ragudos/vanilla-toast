@@ -188,9 +188,13 @@ export class Toast implements ToastInterface {
         if (this.idx >= MAX_TOASTS_VISIBLE) {
             this.src_element.style.setProperty("--toast-opacity", "0");
             this.src_element.setAttribute("aria-hidden", "true");
+            this.src_element.style.pointerEvents = "none";
+            this.src_element.style.touchAction = "none";
         } else if (!this.is_dismissed) {
             this.src_element.style.setProperty("--toast-opacity", "1");
             this.src_element.setAttribute("aria-hidden", "false");
+            this.src_element.style.pointerEvents = "all";
+            this.src_element.style.touchAction = "auto";
         }
 
         if (this.idx == 0) {

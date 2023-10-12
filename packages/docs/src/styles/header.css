@@ -1,0 +1,23 @@
+.header {
+    padding: 0.5rem 1rem;
+    border-bottom: 2px solid hsl(var(--foreground) / 0.25);
+    background-color: hsl(var(--background) / 0.87);
+    backdrop-filter: blur(1rem);
+    position: sticky;
+    z-index: 20;
+    top: 0;
+}
+
+.header > div {
+    display: flex;
+    align-items: center;
+    gap: 2rem;
+
+    justify-content: space-between;
+}
+
+.header ul {
+    display: flex;
+    gap: 0.25rem;
+    align-items: center;
+}

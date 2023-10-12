@@ -45,6 +45,19 @@ importers:
         specifier: ^5.2.2
         version: 5.2.2
 
+  packages/docs:
+    dependencies:
+      '@vanilla-toast/vanilla-toast':
+        specifier: file:..\vanilla-toast
+        version: file:packages/vanilla-toast
+    devDependencies:
+      esbuild:
+        specifier: ^0.19.4
+        version: 0.19.4
+      typescript:
+        specifier: ^5.2.2
+        version: 5.2.2
+
   packages/vanilla-toast:
     devDependencies:
       esbuild:
@@ -1561,3 +1574,8 @@ packages:
       eslint-plugin-prettier: 5.0.0(eslint-config-prettier@9.0.0)(eslint@8.50.0)(prettier@3.0.3)
       prettier: 3.0.3
     dev: true
+
+  file:packages/vanilla-toast:
+    resolution: {directory: packages/vanilla-toast, type: directory}
+    name: '@vanilla-toast/vanilla-toast'
+    dev: false
