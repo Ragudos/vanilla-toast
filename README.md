@@ -89,7 +89,7 @@ pnpm:
 1. From your main JavaScript file, import the necessary files:
 
 ```ts
-  import { toast, mount_toast } from "@vanilla-toast/vanilla-toast";
+  import { toast, mount_toaster } from "@vanilla-toast/vanilla-toast";
   import "@vanilla-toast/vanilla-toast/build/index.min.css";
 ```
 
@@ -97,11 +97,11 @@ pnpm:
 
 ```ts
   // You can pass in options to this function.
-  mount_toast();
+  mount_toaster();
 
   // or
   window.addEventListener("DOMContentLoaded", () => {
-    mount_toast();
+    mount_toaster();
   });
 ```
 
